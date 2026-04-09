@@ -248,7 +248,7 @@ export default function HeroSection() {
               letterSpacing: '-0.025em',
             }}
           >
-            Know exactly why your students got it wrong —{' '}
+            Teaching{' '}
             <span
               style={{
                 backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
@@ -257,8 +257,20 @@ export default function HeroSection() {
                 backgroundClip: 'text',
               }}
             >
-              and what to do next.
+              Smarter
             </span>
+            , Learning{' '}
+            <span
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Better
+            </span>
+            .
           </h1>
 
           {/* Subheadline */}

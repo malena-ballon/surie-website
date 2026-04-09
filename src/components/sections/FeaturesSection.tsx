@@ -85,17 +85,7 @@ export default function FeaturesSection() {
               margin: 0,
             }}
           >
-            From exam to action plan —{' '}
-            <span
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              automatically.
-            </span>
+            Surie generates exams and shows exactly what to reteach.
           </h2>
         </RevealWrapper>
 

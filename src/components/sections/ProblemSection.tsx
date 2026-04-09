@@ -59,8 +59,7 @@ export default function ProblemSection() {
               maxWidth: 640,
             }}
           >
-            Exams give you scores.{' '}
-            <span style={{ color: '#0072C6' }}>Surie gives you answers.</span>
+            Learning gaps exist in every classroom, but they're not clearly visible to teachers.
           </h2>
         </RevealWrapper>
 
