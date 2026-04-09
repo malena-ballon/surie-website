@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #0072C6;
+  --accent: #00B4D8;
+  --bg-warm: #F8F6F2;
+  --bg-white: #ffffff;
+  --text-primary: #1A1A2E;
+  --text-muted: #6B7280;
+  --border: #E8E4DF;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body), sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-warm);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  body {
+    font-family: var(--font-body), sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-warm);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Card */
+  .card {
+    background-color: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    padding: 24px;
+  }
+
+  .card-lg {
+    padding: 32px;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 50px;
+    background-image: linear-gradient(135deg, #0072C6 0%, #00B4D8 100%);
+    color: #ffffff;
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 150ms ease, transform 150ms ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 50px;
+    background-color: transparent;
+    color: var(--primary);
+    font-family: var(--font-heading), sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 9px 19px;
+    border: 1px solid var(--primary);
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--primary);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.98);
+  }
+}
+
+/* ── Animations ── */
+@keyframes modalOverlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalCardIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes ctaPulse {
+  0%,  100% { box-shadow: 0 0 0 0   rgba(0, 114, 198, 0.35); }
+  60%       { box-shadow: 0 0 0 10px rgba(0, 114, 198, 0);    }
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(-50%) rotate(-4deg) translateY(0);  }
+  50%      { transform: translateY(-50%) rotate(-4deg) translateY(-6px); }
+}
+
+@keyframes floatCardRight {
+  0%, 100% { transform: translateY(-50%) rotate(4deg) translateY(0);   }
+  50%      { transform: translateY(-50%) rotate(4deg) translateY(-6px); }
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+@keyframes mobileMenuIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
