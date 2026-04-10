@@ -84,7 +84,7 @@ export default function EarlyAccessPage() {
                   lineHeight: 1.6,
                 }}
               >
-                Be the first to experience Surie — AI-powered diagnostics built for Filipino educators. No spam, ever.
+                Be the first to experience Surie — AI-powered diagnostics built for educators.
               </p>
             </div>
 

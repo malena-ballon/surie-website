@@ -137,7 +137,7 @@ export default function WaitlistFormFields({
         </label>
         <input
           type="text"
-          placeholder="e.g. San Beda College"
+          placeholder="e.g. Ateneo de Manila University"
           value={form.institution}
           onChange={(e) => setForm((p) => ({ ...p, institution: e.target.value }))}
           onFocus={() => setFocused('institution')}
