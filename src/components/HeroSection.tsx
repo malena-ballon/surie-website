@@ -286,7 +286,7 @@ export default function HeroSection() {
           >
             Surie is an AI-powered diagnostic assessment platform built for educators. Generate
             exams from your own materials, instantly see learning gaps, and create targeted
-            follow-ups — all in one place.
+            follow-ups, all in one place.
           </p>
 
           {/* CTA */}
