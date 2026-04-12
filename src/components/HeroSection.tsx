@@ -115,13 +115,11 @@ export default function HeroSection() {
               Diagnostic Report
             </span>
           </div>
-          <div style={{ position: 'relative', width: '100%', height: 192, overflow: 'hidden' }}>
-            <video
-              src="/videos/Diagnostic-Report.mov"
-              autoPlay
-              loop
-              muted
-              playsInline
+          <div style={{ width: '100%', height: 192, overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/videos/Diagnostic-Report.gif"
+              alt="Diagnostic report"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
             />
           </div>
@@ -176,13 +174,11 @@ export default function HeroSection() {
               Exam Builder
             </span>
           </div>
-          <div style={{ position: 'relative', width: '100%', height: 192, overflow: 'hidden' }}>
-            <video
-              src="/videos/Exam-Generation.mov"
-              autoPlay
-              loop
-              muted
-              playsInline
+          <div style={{ width: '100%', height: 192, overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/videos/Exam-Generation.gif"
+              alt="Exam generation"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
             />
           </div>
@@ -341,12 +337,10 @@ export default function HeroSection() {
               background: '#fff',
             }}
           >
-            <video
-              src="/videos/Main.mov"
-              autoPlay
-              loop
-              muted
-              playsInline
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/videos/Main.gif"
+              alt="Surie dashboard"
               style={{ width: '100%', display: 'block' }}
             />
           </div>
