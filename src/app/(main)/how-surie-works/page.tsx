@@ -219,7 +219,7 @@ export default function HowSurieWorksPage() {
                       src={step.screenshot}
                       alt={step.alt}
                       fill
-                      style={{ objectFit: 'cover', objectPosition: 'top left' }}
+                      style={{ objectFit: 'cover', objectPosition: 'top center' }}
                     />
                   </div>
                 </div>
