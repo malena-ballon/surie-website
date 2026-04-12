@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useWaitlistModal } from '@/context/WaitlistModalContext'
 
 export default function HeroSection() {
@@ -116,12 +115,14 @@ export default function HeroSection() {
               Diagnostic Report
             </span>
           </div>
-          <div style={{ position: 'relative', width: '100%', height: 192 }}>
-            <Image
-              src="/screenshots/diagnostic-report.png"
-              alt="Diagnostic report"
-              fill
-              style={{ objectFit: 'cover', objectPosition: 'top left' }}
+          <div style={{ position: 'relative', width: '100%', height: 192, overflow: 'hidden' }}>
+            <video
+              src="/videos/Diagnostic-Report.mov"
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
             />
           </div>
         </div>
@@ -175,12 +176,14 @@ export default function HeroSection() {
               Exam Builder
             </span>
           </div>
-          <div style={{ position: 'relative', width: '100%', height: 192 }}>
-            <Image
-              src="/screenshots/exam-creation.png"
-              alt="Exam creation"
-              fill
-              style={{ objectFit: 'cover', objectPosition: 'top left' }}
+          <div style={{ position: 'relative', width: '100%', height: 192, overflow: 'hidden' }}>
+            <video
+              src="/videos/Exam-Generation.mov"
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
             />
           </div>
         </div>
@@ -338,16 +341,14 @@ export default function HeroSection() {
               background: '#fff',
             }}
           >
-            {/* Aspect ratio: 2708 / 1430 ≈ 52.8% */}
-            <div style={{ position: 'relative', width: '100%', paddingBottom: '52.8%' }}>
-              <Image
-                src="/screenshots/dashboard.png"
-                alt="Surie dashboard"
-                fill
-                style={{ objectFit: 'cover', objectPosition: 'top' }}
-                priority
-              />
-            </div>
+            <video
+              src="/videos/Main.mov"
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ width: '100%', display: 'block' }}
+            />
           </div>
         </div>
       </section>
