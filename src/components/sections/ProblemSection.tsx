@@ -59,7 +59,28 @@ export default function ProblemSection() {
               maxWidth: 640,
             }}
           >
-            Learning gaps exist in every classroom, but they're not clearly visible to teachers.
+            <span
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Learning gaps
+            </span>{' '}
+            exist in every classroom, but they&apos;re{' '}
+            <span
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              not clearly visible
+            </span>{' '}
+            to teachers.
           </h2>
         </RevealWrapper>
 

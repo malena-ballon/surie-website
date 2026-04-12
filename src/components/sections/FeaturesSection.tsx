@@ -85,7 +85,29 @@ export default function FeaturesSection() {
               margin: 0,
             }}
           >
-            Surie generates exams and shows exactly what to reteach.
+            Surie{' '}
+            <span
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              generates exams
+            </span>{' '}
+            and{' '}
+            <span
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              shows exactly what to reteach
+            </span>
+            .
           </h2>
         </RevealWrapper>
 

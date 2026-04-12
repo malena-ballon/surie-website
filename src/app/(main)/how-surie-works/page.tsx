@@ -10,7 +10,7 @@ const steps = [
     title: 'Upload Your Material',
     description:
       'Upload a PDF or document of your lesson content. Surie reads it and understands the topics and subtopics covered — no manual tagging needed.',
-    screenshot: '/screenshots/exam-creation.png',
+    screenshot: '/screenshots/AI-Exam-Generation.png',
     alt: 'Upload material',
   },
   {
@@ -18,7 +18,7 @@ const steps = [
     title: 'Generate an Exam',
     description:
       'Choose your settings: question types, difficulty level, Bloom\'s Taxonomy alignment, and question count. Surie\'s AI builds the full exam for you in seconds.',
-    screenshot: '/screenshots/exam-creation-2.png',
+    screenshot: '/screenshots/Targeted-Reassessment.png',
     alt: 'Exam generator',
   },
   {
@@ -34,7 +34,7 @@ const steps = [
     title: 'Get Your Diagnostic Report',
     description:
       'Surie generates a complete diagnostic report: mastery heatmap, at-risk alerts, misconceptions in plain language, student groups by shared gaps, and one-click re-assessment generation.',
-    screenshot: '/screenshots/diagnostic-report.png',
+    screenshot: '/screenshots/Instant-Diagnostics.png',
     alt: 'Diagnostic report',
   },
 ]
