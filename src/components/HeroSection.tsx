@@ -5,22 +5,59 @@ import { useWaitlistModal } from '@/context/WaitlistModalContext'
 export default function HeroSection() {
   const { openModal } = useWaitlistModal()
 
+  const teal = '#0072C6'
+  const tealLight = '#00B4D8'
+
   return (
     <>
       {/* ── Hero ── */}
       <section
         style={{
           position: 'relative',
-          background: '#F8F6F2',
+          background: 'linear-gradient(135deg, #FAFAF8 0%, #F0FAF9 100%)',
           overflow: 'hidden',
           minHeight: 'clamp(520px, 80vh, 760px)',
           display: 'flex',
           alignItems: 'center',
           paddingTop: 'clamp(64px, 10vw, 100px)',
-          paddingBottom: 'clamp(100px, 15vw, 180px)',
+          paddingBottom: 'clamp(80px, 12vw, 140px)',
         }}
       >
-        {/* Radial glow — top center */}
+        {/* Watermark: large low-opacity dot-grid illustration */}
+        <svg
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '110%',
+            height: '110%',
+            opacity: 0.045,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <pattern id="wm-dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="2" fill={teal} />
+            </pattern>
+            {/* Abstract classroom lines */}
+            <pattern id="wm-grid" x="0" y="0" width="112" height="112" patternUnits="userSpaceOnUse">
+              {/* Desk row */}
+              <rect x="8"  y="52" width="32" height="4"  rx="2" fill={teal} />
+              <rect x="52" y="52" width="32" height="4"  rx="2" fill={teal} />
+              <rect x="30" y="20" width="52" height="3"  rx="1.5" fill={teal} />
+              <circle cx="56" cy="10" r="7" fill="none" stroke={teal} strokeWidth="3" />
+              <rect x="52" y="17" width="8"  height="6"  rx="1" fill={teal} />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#wm-dots)" />
+          <rect width="100%" height="100%" fill="url(#wm-grid)" />
+        </svg>
+
+        {/* Subtle radial glow — top center */}
         <div
           style={{
             position: 'absolute',
@@ -30,164 +67,16 @@ export default function HeroSection() {
             width: 900,
             height: 600,
             background:
-              'radial-gradient(ellipse 900px 500px at 50% 0%, rgba(0,114,198,0.07) 0%, transparent 70%)',
+              `radial-gradient(ellipse 900px 500px at 50% 0%, rgba(0,180,216,0.08) 0%, transparent 70%)`,
             pointerEvents: 'none',
+            zIndex: 0,
           }}
         />
-
-        {/* Decorative dot grid — top right */}
-        <div
-          className="hidden xl:block"
-          style={{
-            position: 'absolute',
-            top: 56,
-            right: 56,
-            width: 128,
-            height: 128,
-            backgroundImage:
-              'radial-gradient(circle, rgba(0,114,198,0.18) 1.5px, transparent 1.5px)',
-            backgroundSize: '18px 18px',
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Decorative dot grid — bottom left */}
-        <div
-          className="hidden xl:block"
-          style={{
-            position: 'absolute',
-            bottom: 72,
-            left: 56,
-            width: 128,
-            height: 128,
-            backgroundImage:
-              'radial-gradient(circle, rgba(0,114,198,0.18) 1.5px, transparent 1.5px)',
-            backgroundSize: '18px 18px',
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Floating card — left */}
-        <div
-          className="hidden xl:block"
-          style={{
-            position: 'absolute',
-            left: 'max(24px, calc(50% - 680px))',
-            top: '50%',
-            width: 268,
-            borderRadius: 14,
-            background: '#fff',
-            border: '1px solid #E8E4DF',
-            boxShadow: '0 12px 40px rgba(0,0,0,0.11)',
-            overflow: 'hidden',
-            zIndex: 1,
-            animation: 'floatCard 5s ease-in-out infinite',
-          }}
-        >
-          <div
-            style={{
-              padding: '8px 12px',
-              borderBottom: '1px solid #E8E4DF',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
-          >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #0072C6, #00B4D8)',
-                display: 'inline-block',
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'var(--font-body), sans-serif',
-                fontSize: 11,
-                fontWeight: 600,
-                color: '#1A1A2E',
-                letterSpacing: '0.03em',
-              }}
-            >
-              Diagnostic Report
-            </span>
-          </div>
-          <div style={{ width: '100%', height: 192, overflow: 'hidden' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/videos/Diagnostic-Report.gif"
-              alt="Diagnostic report"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
-            />
-          </div>
-        </div>
-
-        {/* Floating card — right */}
-        <div
-          className="hidden xl:block"
-          style={{
-            position: 'absolute',
-            right: 'max(24px, calc(50% - 680px))',
-            top: '50%',
-            width: 268,
-            borderRadius: 14,
-            background: '#fff',
-            border: '1px solid #E8E4DF',
-            boxShadow: '0 12px 40px rgba(0,0,0,0.11)',
-            overflow: 'hidden',
-            zIndex: 1,
-            animation: 'floatCardRight 5s ease-in-out infinite',
-            animationDelay: '0.8s',
-          }}
-        >
-          <div
-            style={{
-              padding: '8px 12px',
-              borderBottom: '1px solid #E8E4DF',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}
-          >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #0072C6, #00B4D8)',
-                display: 'inline-block',
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'var(--font-body), sans-serif',
-                fontSize: 11,
-                fontWeight: 600,
-                color: '#1A1A2E',
-                letterSpacing: '0.03em',
-              }}
-            >
-              Exam Builder
-            </span>
-          </div>
-          <div style={{ width: '100%', height: 192, overflow: 'hidden' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/videos/Exam-Generation.gif"
-              alt="Exam generation"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
-            />
-          </div>
-        </div>
 
         {/* Center content */}
         <div
           style={{
-            maxWidth: 640,
+            maxWidth: 660,
             margin: '0 auto',
             padding: '0 24px',
             textAlign: 'center',
@@ -214,7 +103,7 @@ export default function HeroSection() {
               height="14"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#0072C6"
+              stroke={teal}
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -227,7 +116,7 @@ export default function HeroSection() {
                 fontFamily: 'var(--font-body), sans-serif',
                 fontWeight: 600,
                 fontSize: 13,
-                color: '#0072C6',
+                color: teal,
                 letterSpacing: '0.01em',
               }}
             >
@@ -250,7 +139,7 @@ export default function HeroSection() {
             Teaching{' '}
             <span
               style={{
-                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
+                backgroundImage: `linear-gradient(135deg, ${teal} 0%, ${tealLight} 100%)`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -261,7 +150,7 @@ export default function HeroSection() {
             {' '}and{' '}
             <span
               style={{
-                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
+                backgroundImage: `linear-gradient(135deg, ${teal} 0%, ${tealLight} 100%)`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -274,7 +163,7 @@ export default function HeroSection() {
             Learning{' '}
             <span
               style={{
-                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
+                backgroundImage: `linear-gradient(135deg, ${teal} 0%, ${tealLight} 100%)`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -294,12 +183,12 @@ export default function HeroSection() {
               color: '#6B7280',
               lineHeight: 1.7,
               margin: '0 auto 40px',
-              maxWidth: 560,
+              maxWidth: 580,
             }}
           >
-            Surie is an AI-powered diagnostic assessment platform built for educators. Generate
-            exams from your own materials, instantly see learning gaps, and create targeted
-            follow-ups, all in one place.
+            Creating assessments, grading papers, and reviewing descriptive answers individually
+            consumes hours of valuable teaching time. Even so, learning gaps often go undetected.
+            Surie automates the process and surfaces those gaps instantly.
           </p>
 
           {/* CTA */}
@@ -326,30 +215,147 @@ export default function HeroSection() {
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
+
+          {/* Social proof micro-line */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 10,
+              marginTop: 16,
+            }}
+          >
+            {/* Avatar stack */}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {[
+                { bg: '#0072C6', initials: 'T' },
+                { bg: '#00B4D8', initials: 'M' },
+                { bg: '#4A90D9', initials: 'R' },
+                { bg: '#0099B8', initials: 'S' },
+                { bg: '#1A6FB0', initials: 'A' },
+              ].map((avatar, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: '50%',
+                    background: avatar.bg,
+                    border: '2px solid #FAFAF8',
+                    marginLeft: i === 0 ? 0 : -8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 10,
+                    fontWeight: 700,
+                    color: '#fff',
+                    fontFamily: 'var(--font-heading), sans-serif',
+                    zIndex: 5 - i,
+                    position: 'relative',
+                  }}
+                >
+                  {avatar.initials}
+                </div>
+              ))}
+            </div>
+            <span
+              style={{
+                fontFamily: 'var(--font-body), sans-serif',
+                fontSize: 13,
+                color: '#6B7280',
+                fontWeight: 500,
+              }}
+            >
+              Join 50+ teachers already on the waitlist!
+            </span>
+          </div>
         </div>
       </section>
 
-      {/* ── Product screenshot ── */}
-      <section style={{ background: '#F8F6F2', paddingBottom: 96 }}>
+      {/* ── Product screenshot — browser chrome mockup ── */}
+      <section
+        style={{
+          background: 'linear-gradient(180deg, #F0FAF9 0%, #F8F6F2 100%)',
+          paddingTop: 0,
+          paddingBottom: 96,
+        }}
+      >
         <div
           style={{
-            maxWidth: 1100,
+            maxWidth: 1060,
             margin: '0 auto',
             padding: '0 24px',
-            marginTop: 'clamp(-40px, -5vw, -72px)',
+            marginTop: 'clamp(-32px, -4vw, -56px)',
             position: 'relative',
             zIndex: 20,
           }}
         >
+          {/* Browser chrome wrapper */}
           <div
             style={{
               borderRadius: 14,
-              border: '1px solid #E8E4DF',
-              boxShadow: '0 8px 48px rgba(0,0,0,0.10)',
+              border: `2px solid rgba(0,180,216,0.35)`,
+              boxShadow:
+                '0 4px 6px rgba(0,0,0,0.04), 0 12px 32px rgba(0,114,198,0.10), 0 32px 80px rgba(0,0,0,0.10)',
               overflow: 'hidden',
               background: '#fff',
             }}
           >
+            {/* Browser top bar */}
+            <div
+              style={{
+                height: 40,
+                background: '#F3F4F6',
+                borderBottom: '1px solid #E5E7EB',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '0 14px',
+                gap: 8,
+                flexShrink: 0,
+              }}
+            >
+              {/* Traffic lights */}
+              <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0 }}>
+                <div style={{ width: 11, height: 11, borderRadius: '50%', background: '#FF5F57' }} />
+                <div style={{ width: 11, height: 11, borderRadius: '50%', background: '#FFBD2E' }} />
+                <div style={{ width: 11, height: 11, borderRadius: '50%', background: '#28C840' }} />
+              </div>
+              {/* URL bar */}
+              <div
+                style={{
+                  flex: 1,
+                  maxWidth: 340,
+                  margin: '0 auto',
+                  height: 24,
+                  borderRadius: 6,
+                  background: '#FFFFFF',
+                  border: '1px solid #D1D5DB',
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: 10,
+                  gap: 6,
+                }}
+              >
+                {/* Lock icon */}
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-body), sans-serif',
+                    fontSize: 11,
+                    color: '#6B7280',
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  app.surie.io/dashboard
+                </span>
+              </div>
+            </div>
+
+            {/* Screenshot */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/videos/Main.gif"
