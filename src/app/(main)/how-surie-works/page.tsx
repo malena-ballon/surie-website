@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import RevealWrapper from '@/components/RevealWrapper'
 import CTASection from '@/components/sections/CTASection'
 import SectionLabel from '@/components/SectionLabel'
@@ -127,68 +128,16 @@ function UploadCard() {
 }
 
 function ConfigureCard() {
-  const fields = [
-    { label: 'Question Type', value: 'Multiple Choice' },
-    { label: 'Difficulty',    value: 'Medium'          },
-    { label: "Bloom's Level", value: 'Apply'           },
-  ]
   return (
-    <CardShell title="Exam Settings">
-      <div style={{ padding: '18px' }}>
-        {fields.map(({ label, value }) => (
-          <div key={label} style={{ marginBottom: 12 }}>
-            <p style={{
-              fontFamily: 'var(--font-body), sans-serif',
-              fontSize: 10, fontWeight: 700, color: '#9CA3AF',
-              textTransform: 'uppercase', letterSpacing: '0.08em',
-              margin: '0 0 4px',
-            }}>
-              {label}
-            </p>
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              padding: '8px 11px',
-              background: '#F8F6F2',
-              borderRadius: 7,
-              border: '1px solid #E8E4DF',
-            }}>
-              <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 13, color: '#1A1A2E', fontWeight: 500 }}>
-                {value}
-              </span>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </div>
-          </div>
-        ))}
-        {/* Slider row */}
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-            <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>
-              Questions
-            </p>
-            <span style={{ fontFamily: 'var(--font-heading), sans-serif', fontSize: 12, fontWeight: 700, color: teal }}>20</span>
-          </div>
-          <div style={{ height: 5, borderRadius: 99, background: '#E8E4DF', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: '50%', background: `linear-gradient(90deg, ${teal}, ${tealLight})`, borderRadius: 99 }} />
-          </div>
-        </div>
-        <button style={{
-          width: '100%', padding: '10px',
-          background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
-          border: 'none', borderRadius: 7,
-          color: '#fff',
-          fontFamily: 'var(--font-heading), sans-serif',
-          fontWeight: 700, fontSize: 13,
-          cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-        }}>
-          Generate Exam
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
+    <CardShell title="Configure Exam">
+      <Image
+        src="/screenshots/exam-creation-2.png"
+        alt="Configure Exam — Question Breakdown"
+        width={1448}
+        height={930}
+        style={{ width: '100%', height: 'auto', display: 'block' }}
+        sizes="(max-width: 767px) 100vw, 45vw"
+      />
     </CardShell>
   )
 }
@@ -254,68 +203,16 @@ function StudentPortalCard() {
 }
 
 function DiagnosticCard() {
-  const subtopics = [
-    { label: 'Algebra',    pct: 82, warn: false },
-    { label: 'Fractions',  pct: 54, warn: true  },
-    { label: 'Geometry',   pct: 67, warn: false },
-    { label: 'Statistics', pct: 42, warn: true  },
-  ]
   return (
     <CardShell title="Diagnostic Report">
-      <div style={{ padding: '18px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-          <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>
-            Subtopic Mastery
-          </p>
-          <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 11, color: '#9CA3AF' }}>
-            Grade 10 · Math
-          </span>
-        </div>
-        {subtopics.map(({ label, pct, warn }) => (
-          <div key={label} style={{ marginBottom: 9 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, color: '#374151', fontWeight: 500 }}>
-                {label}
-              </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                {warn && (
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                    <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
-                  </svg>
-                )}
-                <span style={{ fontFamily: 'var(--font-heading), sans-serif', fontSize: 12, fontWeight: 700, color: warn ? '#F59E0B' : teal }}>
-                  {pct}%
-                </span>
-              </div>
-            </div>
-            <div style={{ height: 5, borderRadius: 99, background: '#F0F0EE', overflow: 'hidden' }}>
-              <div style={{
-                height: '100%', width: `${pct}%`, borderRadius: 99,
-                background: warn
-                  ? 'linear-gradient(90deg, #F59E0B, #FCD34D)'
-                  : `linear-gradient(90deg, ${teal}, ${tealLight})`,
-              }} />
-            </div>
-          </div>
-        ))}
-        {/* Alert banner */}
-        <div style={{
-          marginTop: 12, padding: '9px 11px',
-          background: 'rgba(245,158,11,0.07)',
-          borderRadius: 7,
-          border: '1px solid rgba(245,158,11,0.18)',
-          display: 'flex', alignItems: 'flex-start', gap: 7,
-        }}>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}>
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-            <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
-          </svg>
-          <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, color: '#92400E', lineHeight: 1.5 }}>
-            8 students need reteaching in Fractions &amp; Statistics
-          </span>
-        </div>
-      </div>
+      <Image
+        src="/screenshots/new-diagnostic.jpeg"
+        alt="Diagnostic Report — Subtopic Mastery and At-Risk Students"
+        width={1400}
+        height={900}
+        style={{ width: '100%', height: 'auto', display: 'block' }}
+        sizes="(max-width: 767px) 100vw, 45vw"
+      />
     </CardShell>
   )
 }
@@ -398,7 +295,7 @@ export default function HowSurieWorksPage() {
     <>
       {/* ── Page Header ── */}
       <section style={{
-        background: '#F8F6F2',
+        background: 'linear-gradient(135deg, #FAFAF8 0%, #F0FAF9 100%)',
         padding: '96px 24px 80px',
         textAlign: 'center',
         position: 'relative',

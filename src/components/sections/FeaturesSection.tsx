@@ -8,6 +8,107 @@ import SectionLabel from '@/components/SectionLabel'
 const teal = '#0072C6'
 const tealLight = '#00B4D8'
 
+// ── Shared window chrome ────────────────────────────────────────────────────
+function MockWindow({ title, children, style }: { title: string; children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <div style={{
+      background: '#fff',
+      borderRadius: 10,
+      border: '1px solid #E5E7EB',
+      boxShadow: '0 4px 20px rgba(0,0,0,0.10)',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column',
+      ...style,
+    }}>
+      {/* Title bar */}
+      <div style={{
+        height: 26,
+        background: '#F3F4F6',
+        borderBottom: '1px solid #E5E7EB',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 9px',
+        gap: 8,
+        flexShrink: 0,
+      }}>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+          <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#FF5F57' }} />
+          <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#FFBD2E' }} />
+          <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#28C840' }} />
+        </div>
+        <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 8, fontWeight: 600, color: '#374151', letterSpacing: '0.01em' }}>
+          {title}
+        </span>
+      </div>
+      {children}
+    </div>
+  )
+}
+
+// ── AI Exam Generation mock UI ──────────────────────────────────────────────
+function ExamGenerationMock() {
+  return (
+    <div style={{
+      position: 'absolute', inset: 0,
+      background: 'transparent',
+      overflow: 'visible',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      {/* ── Back card: Configure Exam (higher, left) ── */}
+      <div style={{
+        position: 'absolute',
+        left: '-2%',
+        top: '2%',
+        width: '80%',
+        zIndex: 1,
+        borderRadius: 12,
+        overflow: 'hidden',
+        boxShadow: '0 12px 40px rgba(0,0,0,0.18)',
+        transform: 'rotate(-1.5deg)',
+      }}>
+        <MockWindow title="Configure Exam">
+          <Image
+            src="/screenshots/exam-creation-2.png"
+            alt="Configure Exam"
+            width={1448}
+            height={930}
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+            sizes="50vw"
+          />
+        </MockWindow>
+      </div>
+
+      {/* ── Front card: Review & Edit (lower, right) ── */}
+      <div style={{
+        position: 'absolute',
+        right: '-2%',
+        bottom: '2%',
+        width: '84%',
+        zIndex: 2,
+        borderRadius: 12,
+        overflow: 'hidden',
+        boxShadow: '0 16px 56px rgba(0,0,0,0.24)',
+        transform: 'rotate(1deg)',
+      }}>
+        <MockWindow title="Review &amp; Edit">
+          <Image
+            src="/screenshots/exam-creation-3.png"
+            alt="Review and Edit"
+            width={2180}
+            height={1264}
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+            sizes="55vw"
+          />
+        </MockWindow>
+      </div>
+    </div>
+  )
+}
+
+
 const gradientText = {
   backgroundImage: `linear-gradient(135deg, ${teal} 0%, ${tealLight} 100%)`,
   WebkitBackgroundClip: 'text' as const,
@@ -33,10 +134,11 @@ const acts = [
   },
   {
     number: '02',
-    badge: 'Instant Diagnostics',
+    badge: 'Diagnostics & Auto-Grading',
     headline: 'The moment they submit, you know exactly why they struggled.',
     headlineAccent: 'exactly why they struggled',
     points: [
+      'Grades automatically — including essays and descriptive answers',
       'Subtopic mastery heatmap for every student, instantly',
       'At-risk student alerts surface the moment results come in',
       'Misconception breakdown in plain language — no analysis needed',
@@ -348,23 +450,43 @@ export default function FeaturesSection() {
                 <div
                   className="act-screenshot act-img"
                   style={{
-                    borderRadius: 14,
-                    overflow: 'hidden',
+                    borderRadius: i === 0 ? 0 : 14,
+                    overflow: i === 0 ? 'visible' : 'hidden',
                     position: 'relative',
-                    aspectRatio: '16 / 10',
-                    background: '#fff',
-                    boxShadow: act.hero
+                    aspectRatio: i === 0 ? '4 / 3' : '16 / 10',
+                    background: i === 0 ? 'transparent' : '#fff',
+                    boxShadow: i === 0 ? 'none' : act.hero
                       ? '0 12px 48px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.05)'
                       : '0 8px 32px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.04)',
                   }}
                 >
-                  <Image
-                    src={act.screenshot}
-                    alt={act.screenshotAlt}
-                    fill
-                    style={{ objectFit: 'cover', objectPosition: 'top left' }}
-                    sizes="(max-width: 768px) 100vw, 45vw"
-                  />
+                  {i === 0 ? (
+                    <ExamGenerationMock />
+                  ) : i === 1 ? (
+                    <MockWindow title="Diagnostic Report" style={{ position: 'absolute', inset: 0, borderRadius: 0 }}>
+                      <div style={{ position: 'relative', flex: 1, overflow: 'hidden' }}>
+                        <Image
+                          src="/screenshots/new-diagnostic.jpeg"
+                          alt="Diagnostic Report"
+                          fill
+                          style={{ objectFit: 'cover', objectPosition: 'top center' }}
+                          sizes="(max-width: 768px) 100vw, 45vw"
+                        />
+                      </div>
+                    </MockWindow>
+                  ) : (
+                    <MockWindow title={act.screenshotAlt} style={{ position: 'absolute', inset: 0, borderRadius: 0 }}>
+                      <div style={{ position: 'relative', flex: 1, overflow: 'hidden' }}>
+                        <Image
+                          src={act.screenshot}
+                          alt={act.screenshotAlt}
+                          fill
+                          style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                          sizes="(max-width: 768px) 100vw, 45vw"
+                        />
+                      </div>
+                    </MockWindow>
+                  )}
                 </div>
               )
 

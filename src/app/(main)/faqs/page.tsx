@@ -22,7 +22,7 @@ export default function FAQsPage() {
       {/* ── Page Header ── */}
       <section
         style={{
-          background: '#FAFAF8',
+          background: 'linear-gradient(135deg, #FAFAF8 0%, #F0FAF9 100%)',
           padding: '96px 24px 72px',
           textAlign: 'center',
           position: 'relative',
