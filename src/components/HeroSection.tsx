@@ -246,7 +246,7 @@ export default function HeroSection() {
             style={{
               fontFamily: 'var(--font-heading), sans-serif',
               fontWeight: 700,
-              fontSize: 'clamp(38px, 4.5vw, 58px)',
+              fontSize: 'clamp(36px, 4.5vw, 58px)',
               color: '#1A1A2E',
               lineHeight: 1.14,
               margin: '0 0 22px',
@@ -298,11 +298,12 @@ export default function HeroSection() {
           {/* CTA */}
           <button
             onClick={openModal}
-            className="btn-primary"
+            className="btn-primary hero-cta"
             style={{
               padding: '14px 32px',
               fontSize: 15,
               animation: 'ctaPulse 3s ease-in-out 2s infinite',
+              WebkitTapHighlightColor: 'transparent',
             }}
           >
             Join the Waitlist
@@ -386,6 +387,7 @@ export default function HeroSection() {
         }}
       >
         <div
+          className="hero-screenshot-wrapper"
           style={{
             maxWidth: 1060,
             margin: '0 auto',
@@ -477,6 +479,18 @@ export default function HeroSection() {
           </div>
         </div>
       </section>
+
+      <style>{`
+        @media (max-width: 767px) {
+          .hero-cta {
+            width: 100%;
+            justify-content: center;
+          }
+          .hero-screenshot-wrapper {
+            padding: 0 16px !important;
+          }
+        }
+      `}</style>
     </>
   )
 }

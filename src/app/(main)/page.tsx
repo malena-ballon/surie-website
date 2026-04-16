@@ -3,7 +3,7 @@ import TrustBar from '@/components/sections/TrustBar'
 import ProblemSection from '@/components/sections/ProblemSection'
 import FeaturesSection from '@/components/sections/FeaturesSection'
 import ClassroomsSection from '@/components/sections/ClassroomsSection'
-import WaitlistSection from '@/components/sections/WaitlistSection'
+import CTASection from '@/components/sections/CTASection'
 
 export default function HomePage() {
   return (
@@ -13,7 +13,7 @@ export default function HomePage() {
       <ProblemSection />
       <FeaturesSection />
       <ClassroomsSection />
-      <WaitlistSection />
+      <CTASection fullForm />
     </>
   )
 }

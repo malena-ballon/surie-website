@@ -1,410 +1,845 @@
 'use client'
 
-import Image from 'next/image'
-import { useWaitlistModal } from '@/context/WaitlistModalContext'
+import { useState } from 'react'
 import RevealWrapper from '@/components/RevealWrapper'
+import CTASection from '@/components/sections/CTASection'
+import SectionLabel from '@/components/SectionLabel'
 
-const steps = [
+const teal = '#0072C6'
+const tealLight = '#00B4D8'
+
+const gradientText = {
+  backgroundImage: `linear-gradient(135deg, ${teal} 0%, ${tealLight} 100%)`,
+  WebkitBackgroundClip: 'text' as const,
+  WebkitTextFillColor: 'transparent' as const,
+  backgroundClip: 'text' as const,
+}
+
+// ── Mock UI Cards ─────────────────────────────────────────────────────────────
+
+function CardShell({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div style={{
+      background: '#fff',
+      borderRadius: 16,
+      border: '1px solid #E8E4DF',
+      boxShadow: '0 8px 40px rgba(0,0,0,0.09)',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: '13px 18px',
+        borderBottom: '1px solid #E8E4DF',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        background: '#FAFAF8',
+      }}>
+        <div style={{
+          width: 9, height: 9, borderRadius: '50%',
+          background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+        }} />
+        <span style={{
+          fontFamily: 'var(--font-body), sans-serif',
+          fontSize: 12,
+          fontWeight: 600,
+          color: '#1A1A2E',
+          letterSpacing: '0.01em',
+        }}>
+          {title}
+        </span>
+      </div>
+      {children}
+    </div>
+  )
+}
+
+function UploadCard() {
+  return (
+    <CardShell title="Upload Material">
+      <div style={{ padding: '20px 18px' }}>
+        {/* Drop zone */}
+        <div style={{
+          border: `2px dashed ${tealLight}`,
+          borderRadius: 10,
+          padding: '24px 16px',
+          textAlign: 'center',
+          background: 'rgba(0,180,216,0.03)',
+          marginBottom: 14,
+        }}>
+          <div style={{
+            width: 44, height: 44, borderRadius: '50%',
+            background: 'rgba(0,114,198,0.08)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto 10px',
+          }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+          </div>
+          <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, fontWeight: 600, color: '#374151', margin: '0 0 3px' }}>
+            Drag &amp; drop your lesson material
+          </p>
+          <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 11, color: '#9CA3AF', margin: 0 }}>
+            PDF, DOCX, TXT supported
+          </p>
+        </div>
+        {/* Uploaded file row */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10,
+          padding: '9px 12px',
+          background: '#F8F6F2',
+          borderRadius: 8,
+          border: '1px solid #E8E4DF',
+        }}>
+          <div style={{
+            width: 30, height: 30, borderRadius: 6,
+            background: '#FEE2E2',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, fontWeight: 600, color: '#1A1A2E', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              Lesson_Plan_Q3.pdf
+            </p>
+            <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 11, color: '#9CA3AF', margin: 0 }}>2.4 MB · Ready</p>
+          </div>
+          <div style={{
+            width: 20, height: 20, borderRadius: '50%',
+            background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </CardShell>
+  )
+}
+
+function ConfigureCard() {
+  const fields = [
+    { label: 'Question Type', value: 'Multiple Choice' },
+    { label: 'Difficulty',    value: 'Medium'          },
+    { label: "Bloom's Level", value: 'Apply'           },
+  ]
+  return (
+    <CardShell title="Exam Settings">
+      <div style={{ padding: '18px' }}>
+        {fields.map(({ label, value }) => (
+          <div key={label} style={{ marginBottom: 12 }}>
+            <p style={{
+              fontFamily: 'var(--font-body), sans-serif',
+              fontSize: 10, fontWeight: 700, color: '#9CA3AF',
+              textTransform: 'uppercase', letterSpacing: '0.08em',
+              margin: '0 0 4px',
+            }}>
+              {label}
+            </p>
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '8px 11px',
+              background: '#F8F6F2',
+              borderRadius: 7,
+              border: '1px solid #E8E4DF',
+            }}>
+              <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 13, color: '#1A1A2E', fontWeight: 500 }}>
+                {value}
+              </span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+          </div>
+        ))}
+        {/* Slider row */}
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+            <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>
+              Questions
+            </p>
+            <span style={{ fontFamily: 'var(--font-heading), sans-serif', fontSize: 12, fontWeight: 700, color: teal }}>20</span>
+          </div>
+          <div style={{ height: 5, borderRadius: 99, background: '#E8E4DF', overflow: 'hidden' }}>
+            <div style={{ height: '100%', width: '50%', background: `linear-gradient(90deg, ${teal}, ${tealLight})`, borderRadius: 99 }} />
+          </div>
+        </div>
+        <button style={{
+          width: '100%', padding: '10px',
+          background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+          border: 'none', borderRadius: 7,
+          color: '#fff',
+          fontFamily: 'var(--font-heading), sans-serif',
+          fontWeight: 700, fontSize: 13,
+          cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+        }}>
+          Generate Exam
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </CardShell>
+  )
+}
+
+function StudentPortalCard() {
+  return (
+    <CardShell title="Student Portal">
+      <div style={{ padding: '24px 20px', textAlign: 'center' }}>
+        <div style={{
+          width: 44, height: 44, borderRadius: 11,
+          background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          margin: '0 auto 14px',
+          boxShadow: '0 4px 14px rgba(0,114,198,0.28)',
+        }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+        </div>
+        <p style={{ fontFamily: 'var(--font-heading), sans-serif', fontSize: 14, fontWeight: 700, color: '#1A1A2E', margin: '0 0 3px' }}>
+          Join Your Class
+        </p>
+        <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, color: '#9CA3AF', margin: '0 0 18px' }}>
+          Enter the code your teacher shared
+        </p>
+        {/* Code input + button */}
+        <div style={{ display: 'flex', gap: 7, marginBottom: 12 }}>
+          <div style={{
+            flex: 1,
+            padding: '9px 12px',
+            background: '#F8F6F2',
+            borderRadius: 7,
+            border: `1.5px solid ${teal}`,
+            display: 'flex', alignItems: 'center',
+          }}>
+            <span style={{ fontFamily: 'var(--font-heading), sans-serif', fontSize: 15, fontWeight: 700, color: '#1A1A2E', letterSpacing: '0.1em' }}>
+              ABC-1234
+            </span>
+          </div>
+          <button style={{
+            padding: '9px 14px',
+            background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+            border: 'none', borderRadius: 7,
+            color: '#fff',
+            fontFamily: 'var(--font-heading), sans-serif',
+            fontWeight: 700, fontSize: 13,
+            cursor: 'pointer', whiteSpace: 'nowrap',
+          }}>
+            Join →
+          </button>
+        </div>
+        {/* Online count */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+          <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#22C55E' }} />
+          <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, color: '#6B7280' }}>
+            24 / 28 students online
+          </span>
+        </div>
+      </div>
+    </CardShell>
+  )
+}
+
+function DiagnosticCard() {
+  const subtopics = [
+    { label: 'Algebra',    pct: 82, warn: false },
+    { label: 'Fractions',  pct: 54, warn: true  },
+    { label: 'Geometry',   pct: 67, warn: false },
+    { label: 'Statistics', pct: 42, warn: true  },
+  ]
+  return (
+    <CardShell title="Diagnostic Report">
+      <div style={{ padding: '18px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+          <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>
+            Subtopic Mastery
+          </p>
+          <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 11, color: '#9CA3AF' }}>
+            Grade 10 · Math
+          </span>
+        </div>
+        {subtopics.map(({ label, pct, warn }) => (
+          <div key={label} style={{ marginBottom: 9 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+              <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, color: '#374151', fontWeight: 500 }}>
+                {label}
+              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                {warn && (
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                )}
+                <span style={{ fontFamily: 'var(--font-heading), sans-serif', fontSize: 12, fontWeight: 700, color: warn ? '#F59E0B' : teal }}>
+                  {pct}%
+                </span>
+              </div>
+            </div>
+            <div style={{ height: 5, borderRadius: 99, background: '#F0F0EE', overflow: 'hidden' }}>
+              <div style={{
+                height: '100%', width: `${pct}%`, borderRadius: 99,
+                background: warn
+                  ? 'linear-gradient(90deg, #F59E0B, #FCD34D)'
+                  : `linear-gradient(90deg, ${teal}, ${tealLight})`,
+              }} />
+            </div>
+          </div>
+        ))}
+        {/* Alert banner */}
+        <div style={{
+          marginTop: 12, padding: '9px 11px',
+          background: 'rgba(245,158,11,0.07)',
+          borderRadius: 7,
+          border: '1px solid rgba(245,158,11,0.18)',
+          display: 'flex', alignItems: 'flex-start', gap: 7,
+        }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1 }}>
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, color: '#92400E', lineHeight: 1.5 }}>
+            8 students need reteaching in Fractions &amp; Statistics
+          </span>
+        </div>
+      </div>
+    </CardShell>
+  )
+}
+
+// ── Step data ─────────────────────────────────────────────────────────────────
+
+const stepData = [
   {
     number: '01',
     title: 'Upload Your Material',
     description:
-      'Upload a PDF or document of your lesson content. Surie reads it and understands the topics and subtopics covered — no manual tagging needed.',
-    screenshot: '/screenshots/AI-Exam-Generation.png',
-    alt: 'Upload material',
+      'Start by uploading your lesson notes, slides, or curriculum documents. Surie reads the content and automatically identifies every topic and subtopic covered — no manual tagging or question-bank setup required.',
+    time: '~2 minutes',
+    flip: false,
   },
   {
     number: '02',
-    title: 'Generate an Exam',
+    title: 'Configure Your Exam',
     description:
-      'Choose your settings: question types, difficulty level, Bloom\'s Taxonomy alignment, and question count. Surie\'s AI builds the full exam for you in seconds.',
-    screenshot: '/screenshots/Targeted-Reassessment.png',
-    alt: 'Exam generator',
+      "Choose question types, difficulty level, Bloom's Taxonomy alignment, and how many questions you need. Surie builds the complete exam in seconds, perfectly matched to what your students just studied.",
+    time: '~30 seconds',
+    flip: true,
   },
   {
     number: '03',
     title: 'Students Take the Exam',
     description:
-      'Publish the exam to your class. Students access it through their own portal using a class code. Surie tracks completion and handles grading automatically.',
-    screenshot: '/screenshots/student-portal.png',
-    alt: 'Student portal',
+      'Publish with one click. Students join through their own portal using a class code — no accounts needed. Surie tracks completion in real time and handles all grading automatically as submissions come in.',
+    time: 'Self-paced by students',
+    flip: false,
   },
   {
     number: '04',
     title: 'Get Your Diagnostic Report',
     description:
-      'Surie generates a complete diagnostic report: mastery heatmap, at-risk alerts, misconceptions in plain language, student groups by shared gaps, and one-click re-assessment generation.',
-    screenshot: '/screenshots/Instant-Diagnostics.png',
-    alt: 'Diagnostic report',
+      'The moment the last student submits, your report is ready. See a subtopic mastery heatmap, at-risk student alerts, and plain-language misconception breakdowns — plus one-click re-assessment targeting the students who need it most.',
+    time: 'Instant after last submission',
+    flip: true,
   },
 ]
 
-const differences = [
+const stepCards = [<UploadCard />, <ConfigureCard />, <StudentPortalCard />, <DiagnosticCard />]
+
+// ── Comparison table data ─────────────────────────────────────────────────────
+
+const comparisonRows = [
   {
-    other: 'Other tools stop at the score.',
-    otherSub: 'Understanding why students got it wrong requires hours of manual analysis.',
-    surie: 'Surie tells you why students got it wrong and what to do about it.',
+    feature: 'Exam Creation',
+    other:   'Write questions manually',
+    surie:   'Generated from your materials in seconds',
   },
   {
-    other: 'Other tools need you to write the questions.',
-    otherSub: 'Hours building a test bank — from scratch, every time.',
-    surie: 'Surie generates them from your own teaching materials.',
+    feature: 'Grading',
+    other:   'One correct answer, exact match only',
+    surie:   'AI-powered grading for descriptive and open-ended answers',
   },
   {
-    other: 'Other tools leave reteaching to you.',
-    otherSub: 'You\'re left guessing what to cover and who needs it most.',
-    surie: 'Surie clusters students by gap and creates follow-up assessments automatically.',
+    feature: 'Insights',
+    other:   'Score output only',
+    surie:   'At-risk alerts, misconception plain language, subtopic mastery analysis',
+  },
+  {
+    feature: 'Follow-up',
+    other:   'Make your own re-test',
+    surie:   'One-click targeted re-assessment',
+  },
+  {
+    feature: 'Time cost',
+    other:   '4–6 hrs per assessment cycle',
+    surie:   'Under 10 minutes, start to finish',
   },
 ]
+
+// ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function HowSurieWorksPage() {
-  const { openModal } = useWaitlistModal()
+  const [showOtherTools, setShowOtherTools] = useState(false)
 
   return (
     <>
       {/* ── Page Header ── */}
-      <section
-        style={{
-          background: '#F8F6F2',
-          padding: '96px 24px 80px',
-          textAlign: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: 700,
-            height: 400,
-            background:
-              'radial-gradient(ellipse 700px 400px at 50% 0%, rgba(0,114,198,0.06) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }}
-        />
+      <section style={{
+        background: '#F8F6F2',
+        padding: '96px 24px 80px',
+        textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', top: 0, left: '50%',
+          transform: 'translateX(-50%)',
+          width: 700, height: 400,
+          background: 'radial-gradient(ellipse 700px 400px at 50% 0%, rgba(0,114,198,0.06) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
         <RevealWrapper style={{ maxWidth: 600, margin: '0 auto', position: 'relative', zIndex: 2 }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-body), sans-serif',
-              fontSize: 13,
-              fontWeight: 600,
-              color: '#0072C6',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              marginBottom: 16,
-            }}
-          >
-            The Process
-          </p>
-          <h1
-            style={{
-              fontFamily: 'var(--font-heading), sans-serif',
-              fontWeight: 700,
-              fontSize: 'clamp(34px, 4vw, 52px)',
-              color: '#1A1A2E',
-              lineHeight: 1.15,
-              letterSpacing: '-0.025em',
-              margin: '0 0 20px',
-            }}
-          >
+          <SectionLabel marginBottom={16}>The Process</SectionLabel>
+          <h1 style={{
+            fontFamily: 'var(--font-heading), sans-serif',
+            fontWeight: 700,
+            fontSize: 'clamp(34px, 4vw, 52px)',
+            color: '#1A1A2E', lineHeight: 1.15,
+            letterSpacing: '-0.025em', margin: '0 0 20px',
+          }}>
             How Surie Works
           </h1>
-          <p
-            style={{
-              fontFamily: 'var(--font-body), sans-serif',
-              fontSize: 17,
-              color: '#6B7280',
-              lineHeight: 1.65,
-              margin: 0,
-            }}
-          >
+          <p style={{
+            fontFamily: 'var(--font-body), sans-serif',
+            fontSize: 17, color: '#6B7280', lineHeight: 1.65, margin: 0,
+          }}>
             Four steps from lesson material to learning clarity.
           </p>
         </RevealWrapper>
       </section>
 
-      {/* ── Steps ── */}
-      <section style={{ background: '#ffffff', padding: '80px 24px 96px' }}>
-        <div style={{ maxWidth: 1060, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 80 }}>
-          {steps.map((step, i) => (
-            <RevealWrapper key={step.number} delay={80}>
-              <div className={`flex flex-col ${i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12`}>
+      {/* ── Vertical Timeline ── */}
+      <section style={{ background: '#ffffff', padding: 'clamp(72px, 10vw, 112px) 24px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div className="timeline-wrapper" style={{ position: 'relative' }}>
 
-                {/* Text block */}
-                <div style={{ flex: '0 0 44%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
-                    <div
-                      style={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: '50%',
-                        backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                        boxShadow: '0 4px 14px rgba(0,114,198,0.28)',
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-heading), sans-serif',
-                          fontWeight: 700,
-                          fontSize: 15,
-                          color: '#fff',
-                          letterSpacing: '0.02em',
-                        }}
-                      >
-                        {step.number}
-                      </span>
-                    </div>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-body), sans-serif',
-                        fontSize: 12,
-                        fontWeight: 600,
-                        color: '#0072C6',
-                        letterSpacing: '0.08em',
-                        textTransform: 'uppercase',
-                      }}
-                    >
-                      Step {step.number}
-                    </span>
-                  </div>
+            {/* Center line — desktop only, handled via CSS class */}
+            <div className="timeline-line" aria-hidden />
 
-                  <h2
-                    style={{
-                      fontFamily: 'var(--font-heading), sans-serif',
-                      fontWeight: 700,
-                      fontSize: 'clamp(22px, 2.5vw, 28px)',
-                      color: '#1A1A2E',
-                      lineHeight: 1.25,
-                      letterSpacing: '-0.015em',
-                      margin: '0 0 14px',
-                    }}
-                  >
+            {stepData.map((step, i) => {
+              const isLast = i === stepData.length - 1
+              const textSide = (
+                <div style={{ maxWidth: 420 }}>
+                  {/* Step label */}
+                  <p style={{
+                    fontFamily: 'var(--font-body), sans-serif',
+                    fontSize: 11, fontWeight: 700, color: teal,
+                    letterSpacing: '0.12em', textTransform: 'uppercase',
+                    margin: '0 0 10px',
+                  }}>
+                    Step {step.number}
+                  </p>
+                  {/* Headline */}
+                  <h2 style={{
+                    fontFamily: 'var(--font-heading), sans-serif',
+                    fontWeight: 700,
+                    fontSize: 'clamp(22px, 2.4vw, 32px)',
+                    color: '#1A1A2E', lineHeight: 1.2,
+                    letterSpacing: '-0.018em',
+                    margin: '0 0 16px',
+                  }}>
                     {step.title}
                   </h2>
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-body), sans-serif',
-                      fontSize: 16,
-                      color: '#6B7280',
-                      lineHeight: 1.7,
-                      margin: 0,
-                      maxWidth: 420,
-                    }}
-                  >
+                  {/* Description */}
+                  <p style={{
+                    fontFamily: 'var(--font-body), sans-serif',
+                    fontSize: 16, color: '#6B7280', lineHeight: 1.7, margin: '0 0 14px',
+                  }}>
                     {step.description}
                   </p>
-                </div>
-
-                {/* Screenshot block */}
-                <div style={{ flex: '0 0 52%', width: '100%' }}>
-                  <div
-                    style={{
-                      borderRadius: 14,
-                      overflow: 'hidden',
-                      border: '1px solid #E8E4DF',
-                      boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
-                      position: 'relative',
-                      height: 'clamp(200px, 30vw, 320px)',
-                      background: '#F8F6F2',
-                    }}
-                  >
-                    <Image
-                      src={step.screenshot}
-                      alt={step.alt}
-                      fill
-                      style={{ objectFit: 'cover', objectPosition: 'top center' }}
-                    />
+                  {/* Time badge */}
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <span style={{
+                      fontFamily: 'var(--font-body), sans-serif',
+                      fontSize: 12, fontWeight: 600,
+                      color: teal, letterSpacing: '0.01em',
+                    }}>
+                      {step.time}
+                    </span>
                   </div>
                 </div>
+              )
 
-              </div>
-            </RevealWrapper>
-          ))}
+              const cardSide = (
+                <div style={{ width: '100%' }}>
+                  {stepCards[i]}
+                </div>
+              )
+
+              return (
+                <RevealWrapper key={step.number} delay={60}>
+                  <div
+                    className="timeline-row"
+                    style={{ marginBottom: isLast ? 0 : 'clamp(60px, 8vw, 96px)' }}
+                  >
+                    {/* Desktop: 3-column grid */}
+                    <div className="timeline-row-inner">
+                      {/* Left column */}
+                      <div className="timeline-col-left">
+                        {!step.flip ? textSide : cardSide}
+                      </div>
+
+                      {/* Node */}
+                      <div className="timeline-node-col">
+                        <div style={{
+                          width: 52, height: 52, borderRadius: '50%',
+                          background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          boxShadow: '0 4px 20px rgba(0,114,198,0.32)',
+                          border: '3px solid #fff',
+                          position: 'relative', zIndex: 2,
+                          flexShrink: 0,
+                        }}>
+                          <span style={{
+                            fontFamily: 'var(--font-heading), sans-serif',
+                            fontWeight: 800, fontSize: 15,
+                            color: '#fff', letterSpacing: '0.01em',
+                          }}>
+                            {step.number}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Right column */}
+                      <div className="timeline-col-right">
+                        {step.flip ? textSide : cardSide}
+                      </div>
+                    </div>
+                  </div>
+                </RevealWrapper>
+              )
+            })}
+          </div>
         </div>
       </section>
 
-      {/* ── What Makes It Different ── */}
+      {/* ── Comparison Table ── */}
       <section style={{ background: '#F8F6F2', padding: '96px 24px' }}>
-        <div style={{ maxWidth: 1060, margin: '0 auto' }}>
-          <RevealWrapper style={{ textAlign: 'center', marginBottom: 56 }}>
-            <p
-              style={{
-                fontFamily: 'var(--font-body), sans-serif',
-                fontSize: 13,
-                fontWeight: 600,
-                color: '#0072C6',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                marginBottom: 14,
-              }}
-            >
-              Why Surie
-            </p>
-            <h2
-              style={{
-                fontFamily: 'var(--font-heading), sans-serif',
-                fontWeight: 700,
-                fontSize: 'clamp(28px, 3.2vw, 42px)',
-                color: '#1A1A2E',
-                lineHeight: 1.18,
-                letterSpacing: '-0.02em',
-                margin: 0,
-              }}
-            >
-              Not just another quiz maker.
+        <div style={{ maxWidth: 860, margin: '0 auto' }}>
+
+          {/* Header */}
+          <RevealWrapper style={{ textAlign: 'center', marginBottom: 48 }}>
+            <SectionLabel marginBottom={14}>Why Surie</SectionLabel>
+            <h2 style={{
+              fontFamily: 'var(--font-heading), sans-serif',
+              fontWeight: 700,
+              fontSize: 'clamp(26px, 3vw, 40px)',
+              color: '#1A1A2E',
+              lineHeight: 1.18,
+              letterSpacing: '-0.02em', margin: 0,
+            }}>
+              Built for diagnosis.{' '}
+              <span style={gradientText}>Not just scores.</span>
             </h2>
           </RevealWrapper>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: 24,
-            }}
-          >
-            {differences.map(({ other, otherSub, surie }, i) => (
-              <RevealWrapper key={i} delay={i * 90}>
+          {/* Table card */}
+          <RevealWrapper delay={80}>
+            <div
+              className={showOtherTools ? 'compare-expanded' : ''}
+              style={{
+                borderRadius: 16,
+                border: '1px solid #E8E4DF',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.08)',
+                overflow: 'hidden',
+                background: '#fff',
+              }}
+            >
+
+              {/* Header row */}
+              <div className="compare-grid" style={{ borderBottom: '2px solid #E8E4DF' }}>
+                {/* Feature label col */}
+                <div style={{
+                  padding: '14px 24px',
+                  background: '#F8F6F2',
+                  borderRight: '1px solid #E8E4DF',
+                }} />
+
+                {/* Other tools col */}
+                <div className="compare-other-col" style={{
+                  padding: '14px 24px',
+                  background: '#F9F9F9',
+                  borderRight: '1px solid #E8E4DF',
+                  display: 'flex', alignItems: 'center',
+                }}>
+                  <span style={{
+                    fontFamily: 'var(--font-body), sans-serif',
+                    fontSize: 12, fontWeight: 700, color: '#9CA3AF',
+                    letterSpacing: '0.08em', textTransform: 'uppercase',
+                  }}>
+                    Other Quiz Tools
+                  </span>
+                </div>
+
+                {/* Surie col */}
+                <div style={{
+                  padding: '14px 24px',
+                  background: '#F0FAF9',
+                  borderLeft: `3px solid ${teal}`,
+                  display: 'flex', alignItems: 'center',
+                }}>
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 7,
+                    background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+                    borderRadius: 99,
+                    padding: '4px 12px',
+                    fontFamily: 'var(--font-body), sans-serif',
+                    fontSize: 12, fontWeight: 700,
+                    color: '#fff', letterSpacing: '0.04em',
+                  }}>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    Surie
+                  </span>
+                </div>
+              </div>
+
+              {/* Data rows */}
+              {comparisonRows.map((row, i) => (
                 <div
+                  key={row.feature}
+                  className="compare-grid"
                   style={{
-                    background: '#fff',
-                    border: '1px solid #E8E4DF',
-                    borderRadius: 14,
-                    boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-                    overflow: 'hidden',
+                    borderBottom: i < comparisonRows.length - 1 ? '1px solid #E8E4DF' : 'none',
                   }}
                 >
-                  {/* Other tools */}
-                  <div style={{ padding: '22px 24px 20px', background: '#FAFAFA', borderBottom: '1px solid #E8E4DF' }}>
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-                      <div
-                        style={{
-                          width: 22,
-                          height: 22,
-                          borderRadius: '50%',
-                          background: '#FFEBEE',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                          marginTop: 2,
-                        }}
-                      >
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#DC3545" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M18 6 6 18M6 6l12 12" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p
-                          style={{
-                            fontFamily: 'var(--font-heading), sans-serif',
-                            fontWeight: 700,
-                            fontSize: 14,
-                            color: '#6B7280',
-                            margin: '0 0 4px',
-                            lineHeight: 1.4,
-                          }}
-                        >
-                          {other}
-                        </p>
-                        <p
-                          style={{
-                            fontFamily: 'var(--font-body), sans-serif',
-                            fontSize: 13,
-                            color: '#9CA3AF',
-                            margin: 0,
-                            lineHeight: 1.5,
-                          }}
-                        >
-                          {otherSub}
-                        </p>
-                      </div>
-                    </div>
+                  {/* Feature label */}
+                  <div style={{
+                    padding: '18px 24px',
+                    background: '#F8F6F2',
+                    borderRight: '1px solid #E8E4DF',
+                    display: 'flex', alignItems: 'center',
+                  }}>
+                    <span style={{
+                      fontFamily: 'var(--font-body), sans-serif',
+                      fontSize: 12, fontWeight: 700, color: '#374151',
+                      letterSpacing: '0.04em', textTransform: 'uppercase',
+                    }}>
+                      {row.feature}
+                    </span>
                   </div>
 
-                  {/* Surie */}
-                  <div style={{ padding: '22px 24px 24px' }}>
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-                      <div
-                        style={{
-                          width: 22,
-                          height: 22,
-                          borderRadius: '50%',
-                          backgroundImage: 'linear-gradient(135deg, #0072C6, #00B4D8)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                          marginTop: 2,
-                        }}
-                      >
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </div>
-                      <p
-                        style={{
-                          fontFamily: 'var(--font-heading), sans-serif',
-                          fontWeight: 700,
-                          fontSize: 15,
-                          color: '#1A1A2E',
-                          margin: 0,
-                          lineHeight: 1.45,
-                        }}
-                      >
-                        {surie}
-                      </p>
-                    </div>
+                  {/* Other tools cell */}
+                  <div className="compare-other-col" style={{
+                    padding: '18px 24px',
+                    background: '#F9F9F9',
+                    borderRight: '1px solid #E8E4DF',
+                    display: 'flex', alignItems: 'center', gap: 10,
+                  }}>
+                    <span style={{
+                      fontFamily: 'var(--font-body), sans-serif',
+                      fontSize: 13, color: '#9CA3AF',
+                      lineHeight: 1.5, flexShrink: 0,
+                      userSelect: 'none',
+                    }}>
+                      —
+                    </span>
+                    <span style={{
+                      fontFamily: 'var(--font-body), sans-serif',
+                      fontSize: 14, color: '#9CA3AF',
+                      lineHeight: 1.5,
+                    }}>
+                      {row.other}
+                    </span>
+                  </div>
+
+                  {/* Surie cell */}
+                  <div style={{
+                    padding: '18px 24px',
+                    background: '#F0FAF9',
+                    borderLeft: `3px solid ${teal}`,
+                    display: 'flex', alignItems: 'center', gap: 10,
+                  }}>
+                    <span style={{
+                      width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                      background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </span>
+                    <span style={{
+                      fontFamily: 'var(--font-body), sans-serif',
+                      fontSize: 14, fontWeight: 600, color: '#1A1A2E',
+                      lineHeight: 1.5,
+                    }}>
+                      {row.surie}
+                    </span>
                   </div>
                 </div>
-              </RevealWrapper>
-            ))}
+              ))}
+            </div>
+          </RevealWrapper>
+
+          {/* Mobile toggle — shown below table on small screens */}
+          <div className="compare-toggle-wrap" style={{ textAlign: 'center', marginTop: 16 }}>
+            <button
+              onClick={() => setShowOtherTools(v => !v)}
+              className={`compare-toggle-btn${showOtherTools ? ' open' : ''}`}
+              style={{
+                display: 'none', // shown via CSS on mobile only
+                alignItems: 'center', gap: 6,
+                padding: '10px 18px',
+                borderRadius: 8,
+                background: 'transparent',
+                border: '1px solid #D4D4D0',
+                fontFamily: 'var(--font-body), sans-serif',
+                fontSize: 13, fontWeight: 600, color: '#6B7280',
+                cursor: 'pointer',
+                WebkitTapHighlightColor: 'transparent',
+                transition: 'border-color 150ms ease, color 150ms ease',
+              }}
+            >
+              {showOtherTools ? 'Hide comparison ▲' : 'Compare with other tools ▼'}
+            </button>
           </div>
         </div>
       </section>
 
       {/* ── CTA ── */}
-      <section style={{ background: '#ffffff', padding: '96px 24px' }}>
-        <RevealWrapper style={{ textAlign: 'center' }}>
-          <h2
-            style={{
-              fontFamily: 'var(--font-heading), sans-serif',
-              fontWeight: 700,
-              fontSize: 'clamp(26px, 3vw, 38px)',
-              color: '#1A1A2E',
-              lineHeight: 1.2,
-              letterSpacing: '-0.02em',
-              margin: '0 0 14px',
-            }}
-          >
-            Ready to see it in action?
-          </h2>
-          <p
-            style={{
-              fontFamily: 'var(--font-body), sans-serif',
-              fontSize: 16,
-              color: '#6B7280',
-              lineHeight: 1.65,
-              margin: '0 auto 36px',
-              maxWidth: 480,
-            }}
-          >
-            Join the waitlist and be among the first educators to use Surie when we launch.
-          </p>
-          <button onClick={openModal} className="btn-primary" style={{ padding: '14px 32px', fontSize: 15 }}>
-            Join the Waitlist
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </button>
-        </RevealWrapper>
-      </section>
+      <CTASection fullForm />
+
+      <style>{`
+        /* ══════════════════════════════════════════════
+           COMPARISON TABLE
+           ══════════════════════════════════════════════ */
+        .compare-grid {
+          display: grid;
+          grid-template-columns: 160px 1fr 1fr;
+        }
+
+        /* Mobile: hide Other Tools column by default, show toggle */
+        @media (max-width: 767px) {
+          .compare-grid {
+            grid-template-columns: 110px 1fr;
+          }
+          .compare-other-col {
+            display: none;
+          }
+          .compare-toggle-btn {
+            display: inline-flex !important;
+          }
+          /* When toggled on, restore 3-column layout */
+          .compare-expanded .compare-grid {
+            grid-template-columns: 90px 1fr 1fr;
+          }
+          .compare-expanded .compare-other-col {
+            display: flex !important;
+          }
+          .compare-expanded .compare-grid > div {
+            padding: 12px 10px !important;
+          }
+          .compare-toggle-btn.open {
+            border-color: ${teal};
+            color: ${teal};
+          }
+        }
+
+        /* ══════════════════════════════════════════════
+           TIMELINE — DESKTOP
+           ══════════════════════════════════════════════ */
+        .timeline-line {
+          position: absolute;
+          left: 50%;
+          top: 26px;
+          bottom: 26px;
+          width: 2px;
+          background: linear-gradient(to bottom, ${teal}, ${tealLight});
+          transform: translateX(-50%);
+          z-index: 0;
+          border-radius: 2px;
+        }
+
+        .timeline-row-inner {
+          display: grid;
+          grid-template-columns: 1fr 80px 1fr;
+          gap: 0 52px;
+          align-items: center;
+          position: relative;
+          z-index: 1;
+        }
+
+        .timeline-col-left  { display: flex; justify-content: flex-end;   }
+        .timeline-col-right { display: flex; justify-content: flex-start;  }
+        .timeline-node-col  { display: flex; align-items: center; justify-content: center; }
+
+        /* ══════════════════════════════════════════════
+           TIMELINE — MOBILE (left-rail)
+           ══════════════════════════════════════════════ */
+        @media (max-width: 767px) {
+          .timeline-line {
+            left: 16px;
+            top: 0;
+            bottom: 0;
+            transform: none;
+          }
+
+          .timeline-row-inner {
+            display: block;
+            padding-left: 56px;
+            position: relative;
+          }
+
+          .timeline-node-col {
+            position: absolute;
+            left: 0;
+            top: 0;
+            justify-content: flex-start;
+          }
+
+          /* 32px circles on mobile */
+          .timeline-node-col > div {
+            width:  32px !important;
+            height: 32px !important;
+            font-size: 12px !important;
+          }
+
+          .timeline-col-left,
+          .timeline-col-right {
+            justify-content: flex-start;
+            margin-bottom: 16px;
+          }
+
+          .timeline-col-left > div,
+          .timeline-col-right > div {
+            max-width: 100% !important;
+          }
+
+          /* Always: text first, then card */
+          .timeline-col-left  { order: 1; }
+          .timeline-node-col  { order: 0; }
+          .timeline-col-right { order: 2; }
+        }
+      `}</style>
     </>
   )
 }

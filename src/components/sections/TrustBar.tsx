@@ -22,7 +22,7 @@ const textStyle: React.CSSProperties = {
 
 export default function TrustBar() {
   return (
-    <div style={{
+    <div className="trust-bar-root" style={{
       background: '#fff',
       borderTop: '1px solid #E8E8E4',
       borderBottom: '1px solid #E8E8E4',
@@ -111,10 +111,10 @@ export default function TrustBar() {
           background: #E8E8E4;
           flex-shrink: 0;
         }
+        .trust-hide-mobile { display: flex; }
         @media (max-width: 767px) {
-          .trust-hide-mobile {
-            display: none !important;
-          }
+          /* Hide entire trust bar on mobile to avoid clutter */
+          .trust-bar-root { display: none !important; }
         }
       `}</style>
     </div>

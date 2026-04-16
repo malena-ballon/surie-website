@@ -2,6 +2,17 @@
 
 import { useState } from 'react'
 
+const teal = '#0072C6'
+const tealLight = '#00B4D8'
+const gradient = `linear-gradient(135deg, ${teal} 0%, ${tealLight} 100%)`
+
+const categoryIds: Record<string, string> = {
+  'General':           'faq-general',
+  'Exams & AI':        'faq-exams-ai',
+  'Diagnostics':       'faq-diagnostics',
+  'Access & Accounts': 'faq-access-accounts',
+}
+
 const faqData = [
   {
     category: 'General',
@@ -29,7 +40,7 @@ const faqData = [
     items: [
       {
         q: 'How does AI exam generation work?',
-        a: 'You upload your lesson material (PDF or document), choose your settings — question types, difficulty, Bloom\'s Taxonomy level, and question count — and Surie\'s AI generates a complete exam based on your content.',
+        a: "You upload your lesson material (PDF or document), choose your settings — question types, difficulty, Bloom's Taxonomy level, and question count — and Surie's AI generates a complete exam based on your content.",
       },
       {
         q: 'What question types are supported?',
@@ -54,7 +65,7 @@ const faqData = [
       },
       {
         q: 'What is a re-assessment?',
-        a: "A follow-up exam that Surie generates automatically, targeting specific weak subtopics. It uses MCQ-only questions for fast automated grading.",
+        a: 'A follow-up exam that Surie generates automatically, targeting specific weak subtopics. It uses MCQ-only questions for fast automated grading.',
       },
     ],
   },
@@ -63,7 +74,7 @@ const faqData = [
     items: [
       {
         q: 'How do students take exams?',
-        a: 'Students log in to a separate student portal and join your class using a class code. They can see assigned exams, take them within any time limits you\'ve set, and view their status.',
+        a: "Students log in to a separate student portal and join your class using a class code. They can see assigned exams, take them within any time limits you've set, and view their status.",
       },
       {
         q: 'Can multiple teachers use Surie at one institution?',
@@ -77,7 +88,7 @@ export default function FAQAccordion() {
   const [openIds, setOpenIds] = useState<Set<string>>(new Set())
 
   const toggle = (id: string) => {
-    setOpenIds((prev) => {
+    setOpenIds(prev => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
@@ -87,141 +98,215 @@ export default function FAQAccordion() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-      {faqData.map(({ category, items }) => (
-        <div key={category}>
-          {/* Category label */}
+      {faqData.map(({ category, items }) => {
+        const anchorId = categoryIds[category]
+
+        return (
           <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              marginBottom: 12,
-            }}
+            key={category}
+            id={anchorId}
+            style={{ scrollMarginTop: 84 }}
           >
-            <span
-              style={{
-                fontFamily: 'var(--font-heading), sans-serif',
-                fontWeight: 700,
-                fontSize: 13,
-                color: '#0072C6',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}
-            >
-              {category}
-            </span>
-            <div style={{ flex: 1, height: 1, background: '#E8E4DF' }} />
-          </div>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20 }}>
 
-          {/* Questions */}
-          <div
-            style={{
-              background: '#fff',
-              border: '1px solid #E8E4DF',
-              borderRadius: 14,
-              overflow: 'hidden',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
-            }}
-          >
-            {items.map(({ q, a }, i) => {
-              const id = `${category}-${i}`
-              const isOpen = openIds.has(id)
-              const isLast = i === items.length - 1
+              {/* ── Sticky left marker — desktop only ── */}
+              <div
+                className="faq-sticky-marker"
+                style={{
+                  position: 'sticky',
+                  top: 88,
+                  width: 28,
+                  flexShrink: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  paddingTop: 12,
+                }}
+              >
+                <div style={{
+                  width: 2,
+                  height: 28,
+                  borderRadius: 2,
+                  background: gradient,
+                  flexShrink: 0,
+                }} />
+                <span style={{
+                  writingMode: 'vertical-rl',
+                  transform: 'rotate(180deg)',
+                  marginTop: 8,
+                  fontFamily: 'var(--font-body), sans-serif',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: '0.10em',
+                  textTransform: 'uppercase',
+                  color: teal,
+                  whiteSpace: 'nowrap',
+                }}>
+                  {category}
+                </span>
+              </div>
 
-              return (
-                <div
-                  key={id}
-                  style={{
-                    borderBottom: isLast ? 'none' : '1px solid #E8E4DF',
-                  }}
-                >
-                  {/* Question row */}
-                  <button
-                    onClick={() => toggle(id)}
-                    style={{
-                      width: '100%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: 16,
-                      padding: '20px 24px',
-                      background: 'transparent',
-                      border: 'none',
-                      cursor: 'pointer',
-                      textAlign: 'left',
-                      transition: 'background 150ms ease',
-                    }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = '#FAFAF9' }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-heading), sans-serif',
-                        fontWeight: 600,
-                        fontSize: 15,
-                        color: '#1A1A2E',
-                        lineHeight: 1.45,
-                        flex: 1,
-                      }}
-                    >
-                      {q}
-                    </span>
-                    <div
-                      style={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: '50%',
-                        background: isOpen ? 'linear-gradient(135deg, #0072C6, #00B4D8)' : '#F8F6F2',
-                        border: isOpen ? 'none' : '1px solid #E8E4DF',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                        transition: 'background 200ms ease, transform 200ms ease',
-                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      }}
-                    >
-                      {isOpen ? (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M5 12h14" />
-                        </svg>
-                      ) : (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 5v14M5 12h14" />
-                        </svg>
-                      )}
-                    </div>
-                  </button>
+              {/* ── Content: category header + cards ── */}
+              <div style={{ flex: 1, minWidth: 0 }}>
 
-                  {/* Answer */}
-                  <div
-                    style={{
-                      maxHeight: isOpen ? '400px' : '0',
-                      overflow: 'hidden',
-                      transition: 'max-height 0.32s ease',
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-body), sans-serif',
-                        fontSize: 15,
-                        color: '#6B7280',
-                        lineHeight: 1.7,
-                        margin: 0,
-                        padding: '0 24px 22px',
-                        borderTop: '1px solid #F0EDE8',
-                        paddingTop: 16,
-                      }}
-                    >
-                      {a}
-                    </p>
-                  </div>
+                {/* Category header row */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '10px 0',
+                  borderBottom: '1px solid #E8E8E4',
+                  marginBottom: 16,
+                }}>
+                  <span style={{
+                    fontFamily: 'var(--font-body), sans-serif',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: teal,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                  }}>
+                    {category}
+                  </span>
+                  <span style={{
+                    fontFamily: 'var(--font-body), sans-serif',
+                    fontSize: 13,
+                    color: '#6B7280',
+                  }}>
+                    {items.length} question{items.length !== 1 ? 's' : ''}
+                  </span>
                 </div>
-              )
-            })}
+
+                {/* FAQ cards */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {items.map(({ q, a }, i) => {
+                    const id = `${category}-${i}`
+                    const isOpen = openIds.has(id)
+
+                    return (
+                      <div
+                        key={id}
+                        className="faq-card"
+                        style={{
+                          background: isOpen ? 'rgba(0,114,198,0.04)' : '#fff',
+                          borderRadius: 12,
+                          boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+                          borderLeft: isOpen
+                            ? `3px solid ${teal}`
+                            : '3px solid transparent',
+                          transition: 'background 200ms ease, box-shadow 200ms ease, border-color 200ms ease',
+                        }}
+                      >
+                        {/* Question button */}
+                        <button
+                          onClick={() => toggle(id)}
+                          style={{
+                            width: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: 16,
+                            padding: '20px 24px',
+                            background: 'transparent',
+                            border: 'none',
+                            cursor: 'pointer',
+                            textAlign: 'left',
+                            WebkitTapHighlightColor: 'transparent',
+                          }}
+                        >
+                          <span style={{
+                            fontFamily: 'var(--font-heading), sans-serif',
+                            fontWeight: 600,
+                            fontSize: 16,
+                            color: '#1A1A1A',
+                            lineHeight: 1.45,
+                            flex: 1,
+                          }}>
+                            {q}
+                          </span>
+
+                          {/* Chevron icon */}
+                          <div style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: '50%',
+                            background: isOpen ? gradient : 'rgba(0,114,198,0.12)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            transition: 'background 200ms ease',
+                          }}>
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke={isOpen ? '#fff' : teal}
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              style={{
+                                transition: 'transform 200ms ease',
+                                transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                                display: 'block',
+                              }}
+                            >
+                              <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                          </div>
+                        </button>
+
+                        {/* Answer — max-height transition */}
+                        <div
+                          className="faq-card-answer"
+                          style={{
+                            maxHeight: isOpen ? '500px' : '0',
+                            overflow: 'hidden',
+                            transition: 'max-height 300ms ease-in-out',
+                          }}
+                        >
+                          <p style={{
+                            fontFamily: 'var(--font-body), sans-serif',
+                            fontSize: 15,
+                            color: '#6B7280',
+                            lineHeight: 1.7,
+                            margin: 0,
+                            padding: '0 24px 22px',
+                          }}>
+                            {a}
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
+
+      <style>{`
+        .faq-card:hover {
+          box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important;
+        }
+        .faq-sticky-marker {
+          display: flex;
+        }
+        @media (max-width: 767px) {
+          .faq-sticky-marker {
+            display: none !important;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .faq-card,
+          .faq-card-answer,
+          .faq-card button svg {
+            transition: none !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

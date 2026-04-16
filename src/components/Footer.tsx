@@ -12,7 +12,7 @@ export default function Footer() {
     <footer
       style={{
         backgroundColor: '#ffffff',
-        borderTop: '1px solid #E8E4DF',
+        borderTop: '1px solid #E8E8E4',
       }}
     >
       <div
@@ -62,7 +62,7 @@ export default function Footer() {
                 lineHeight: 1.5,
               }}
             >
-              Teaching Smarter, Learning Better.
+              Teaching Smarter. Learning Better.
             </p>
           </div>
 
@@ -135,7 +135,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div
           style={{
-            borderTop: '1px solid #E8E4DF',
+            borderTop: '1px solid #E8E8E4',
             marginTop: 48,
             paddingTop: 24,
             textAlign: 'center',

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import RevealWrapper from '@/components/RevealWrapper'
+import SectionLabel from '@/components/SectionLabel'
 
 const teal = '#0072C6'
 const tealLight = '#00B4D8'
@@ -43,22 +44,11 @@ export default function ProblemSection() {
       <div style={{ maxWidth: 1160, margin: '0 auto', padding: '0 24px' }}>
 
         {/* Section label */}
-        <RevealWrapper style={{ textAlign: 'center', marginBottom: 18 }}>
-          <span
-            style={{
-              fontFamily: 'var(--font-body), sans-serif',
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              ...gradientText,
-            }}
-          >
-            The Problem
-          </span>
+        <RevealWrapper style={{ textAlign: 'center' }}>
+          <SectionLabel>The Problem</SectionLabel>
         </RevealWrapper>
 
-        {/* Section headline */}
+        {/* Section headline — serif for emotional weight */}
         <RevealWrapper style={{ textAlign: 'center', marginBottom: 64 }}>
           <h2
             style={{

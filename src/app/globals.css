@@ -2,79 +2,219 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   All colours, spacing, and typography values live here.
+   Components reference these variables — never raw hex or px literals.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 :root {
-  --primary: #0072C6;
-  --accent: #00B4D8;
-  --bg-warm: #F8F6F2;
-  --bg-white: #ffffff;
-  --text-primary: #1A1A2E;
-  --text-muted: #6B7280;
-  --border: #E8E4DF;
+  /* ── Brand colour palette ── */
+  --color-primary:       #0072C6;   /* buttons, links, active states   */
+  --color-primary-dark:  #004E8C;   /* hover darken                    */
+  --color-primary-light: #F0FAF9;   /* tinted backgrounds              */
+  --color-accent:        #00B4D8;   /* gradient endpoint, highlights   */
+
+  /* ── Text ── */
+  --color-text:          #1A1A2E;   /* default body copy               */
+  --color-text-muted:    #6B7280;   /* secondary / captions            */
+  --color-text-faint:    #9CA3AF;   /* disabled / placeholder          */
+
+  /* ── Surface & border ── */
+  --color-bg:            #FAFAF8;   /* page background                 */
+  --color-bg-alt:        #F5F5F3;   /* alternate section background    */
+  --color-bg-white:      #ffffff;
+  --color-border:        #E8E8E4;   /* dividers, card borders          */
+  --color-border-strong: #D4D4D0;
+
+  /* ── Semantic aliases (backward-compat with existing components) ── */
+  --primary:      var(--color-primary);
+  --accent:       var(--color-accent);
+  --bg-warm:      var(--color-bg);
+  --bg-white:     var(--color-bg-white);
+  --text-primary: var(--color-text);
+  --text-muted:   var(--color-text-muted);
+  --border:       var(--color-border);
+
+  /* ── Spacing scale ── */
+  --space-xs:   8px;
+  --space-sm:  16px;
+  --space-md:  32px;
+  --space-lg:  64px;
+  --space-xl:  96px;
+  --space-2xl: 128px;
+
+  /* ── Typography ── */
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 16px;
+  --text-lg:   18px;
+  --text-xl:   20px;
+
+  --leading-tight:  1.2;
+  --leading-snug:   1.4;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  --tracking-tight:  -0.025em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.06em;
+  --tracking-wider:   0.10em;
+  --tracking-widest:  0.14em;
+
+  /* ── Radius ── */
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-pill: 999px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  --shadow-brand: 0 4px 18px rgba(0,114,198,0.28);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
 
 @layer base {
   html {
-    font-family: var(--font-body), sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--text-primary);
-    background-color: var(--bg-warm);
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading), sans-serif;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.2;
-  }
-
-  body {
-    font-family: var(--font-body), sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--text-primary);
-    background-color: var(--bg-warm);
+    font-family: var(--font-body), 'DM Sans', sans-serif;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text);
+    background-color: var(--color-bg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  body {
+    font-family: var(--font-body), 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: var(--leading-tight);
+  }
+
+  /* Serif variant — apply via .h-serif class on pain/problem statements */
+  .h-serif {
+    font-family: var(--font-serif), 'Fraunces', Georgia, serif !important;
+    font-weight: 700;
+    font-style: normal;
+    line-height: 1.18 !important;
+  }
+
+  .h-serif-italic {
+    font-family: var(--font-serif), 'Fraunces', Georgia, serif !important;
+    font-weight: 700;
+    font-style: italic;
+  }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   COMPONENT UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 @layer components {
-  /* Card */
+
+  /* ── Section padding ── */
+  .section-pad {
+    padding-top:    var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
+  @media (max-width: 767px) {
+    .section-pad {
+      padding-top:    var(--space-lg);
+      padding-bottom: var(--space-lg);
+    }
+  }
+
+  /* ── Section label (the small caps line above every section headline) ──
+     Usage: <div class="section-label">The Problem</div>
+     ─────────────────────────────────────────────────────────────────────── */
+  .section-label {
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    gap:             10px;
+    margin-bottom:   var(--space-sm);
+    font-family:     var(--font-body), sans-serif;
+    font-size:       var(--text-xs);
+    font-weight:     700;
+    letter-spacing:  var(--tracking-wider);
+    text-transform:  uppercase;
+    color:           var(--color-primary);
+  }
+
+  .section-label::before,
+  .section-label::after {
+    content:       '';
+    display:       inline-block;
+    width:         5px;
+    height:        5px;
+    border-radius: 50%;
+    background:    var(--color-primary);
+    opacity:       0.7;
+    flex-shrink:   0;
+  }
+
+  /* ── Card ── */
   .card {
-    background-color: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    padding: 24px;
+    background-color: var(--color-bg-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-md);
   }
 
   .card-lg {
-    padding: 32px;
+    padding: var(--space-md) calc(var(--space-md) * 1.25);
   }
 
-  /* Buttons */
+  /* ── Gradient helpers ── */
+  .gradient-text {
+    background-image: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-bg {
+    background-image: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  }
+
+  /* ── Buttons ── */
   .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border-radius: 50px;
-    background-image: linear-gradient(135deg, #0072C6 0%, #00B4D8 100%);
-    color: #ffffff;
-    font-family: var(--font-heading), sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    transition: opacity 150ms ease, transform 150ms ease;
+    display:        inline-flex;
+    align-items:    center;
+    gap:            8px;
+    border-radius:  var(--radius-pill);
+    background-image: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+    color:          #ffffff;
+    font-family:    var(--font-heading), sans-serif;
+    font-weight:    700;
+    font-size:      14px;
+    padding:        10px 20px;
+    border:         none;
+    cursor:         pointer;
+    transition:     opacity 150ms ease, transform 150ms ease;
     text-decoration: none;
-    white-space: nowrap;
+    white-space:    nowrap;
   }
 
   .btn-primary:hover {
-    opacity: 0.92;
+    opacity:   0.92;
     transform: translateY(-1px);
   }
 
@@ -83,26 +223,26 @@
   }
 
   .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border-radius: 50px;
+    display:        inline-flex;
+    align-items:    center;
+    gap:            8px;
+    border-radius:  var(--radius-pill);
     background-color: transparent;
-    color: var(--primary);
-    font-family: var(--font-heading), sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    padding: 9px 19px;
-    border: 1px solid var(--primary);
-    cursor: pointer;
-    transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+    color:          var(--color-primary);
+    font-family:    var(--font-heading), sans-serif;
+    font-weight:    700;
+    font-size:      14px;
+    padding:        9px 19px;
+    border:         1px solid var(--color-primary);
+    cursor:         pointer;
+    transition:     background-color 150ms ease, color 150ms ease, transform 150ms ease;
     text-decoration: none;
-    white-space: nowrap;
+    white-space:    nowrap;
   }
 
   .btn-secondary:hover {
-    background-color: var(--primary);
-    color: #ffffff;
+    background-color: var(--color-primary);
+    color:     #ffffff;
     transform: translateY(-1px);
   }
 
@@ -111,7 +251,10 @@
   }
 }
 
-/* ── Animations ── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 @keyframes modalOverlayIn {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -133,12 +276,12 @@
 }
 
 @keyframes floatCard {
-  0%, 100% { transform: translateY(-50%) rotate(-4deg) translateY(0);  }
+  0%, 100% { transform: translateY(-50%) rotate(-4deg) translateY(0);    }
   50%      { transform: translateY(-50%) rotate(-4deg) translateY(-6px); }
 }
 
 @keyframes floatCardRight {
-  0%, 100% { transform: translateY(-50%) rotate(4deg) translateY(0);   }
+  0%, 100% { transform: translateY(-50%) rotate(4deg) translateY(0);    }
   50%      { transform: translateY(-50%) rotate(4deg) translateY(-6px); }
 }
 

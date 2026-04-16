@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import RevealWrapper from '@/components/RevealWrapper'
+import SectionLabel from '@/components/SectionLabel'
 
 const teal = '#0072C6'
 const tealLight = '#00B4D8'
@@ -76,7 +77,7 @@ export default function FeaturesSection() {
 
   const activeSlideRef          = useRef(0)
   const wrapperTopRef           = useRef(0)   // absolute Y of wrapper top in page
-  const continueTimer           = useRef<ReturnType<typeof setTimeout>>()
+  const continueTimer           = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const isProgrammaticScrollRef = useRef(false)
 
   // ── Cache the wrapper's absolute top after mount / resize ────────────────
@@ -216,18 +217,7 @@ export default function FeaturesSection() {
           padding: 'clamp(72px, 10vw, 112px) 24px 24px',
         }}>
           <div style={{ maxWidth: 1160, margin: '0 auto', textAlign: 'center' }}>
-            <span style={{
-              fontFamily: 'var(--font-body), sans-serif',
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              display: 'block',
-              marginBottom: 16,
-              ...gradientText,
-            }}>
-              What Surie Does
-            </span>
+            <SectionLabel marginBottom={16}>What Surie Does</SectionLabel>
             <h2 style={{
               fontFamily: 'var(--font-heading), sans-serif',
               fontWeight: 700,
@@ -285,7 +275,7 @@ export default function FeaturesSection() {
           >
             {acts.map((act, i) => {
               const textContent = (
-                <div>
+                <div className="act-text">
                   <div style={{ marginBottom: 18 }}>
                     <span style={{
                       display: 'inline-block',
@@ -356,7 +346,7 @@ export default function FeaturesSection() {
 
               const screenshotContent = (
                 <div
-                  className="act-screenshot"
+                  className="act-screenshot act-img"
                   style={{
                     borderRadius: 14,
                     overflow: 'hidden',
@@ -601,7 +591,13 @@ export default function FeaturesSection() {
           .nav-arrow { display: none !important; }
         }
         @media (max-width: 767px) {
-          .act-grid { grid-template-columns: 1fr !important; }
+          .act-grid {
+            grid-template-columns: 1fr !important;
+            gap: 20px !important;
+          }
+          /* Always show text above image regardless of flip order */
+          .act-text { order: 1 !important; }
+          .act-img  { order: 2 !important; }
           .act-screenshot { aspect-ratio: auto !important; height: 200px !important; }
         }
       `}</style>
