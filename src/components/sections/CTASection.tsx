@@ -312,7 +312,7 @@ export default function CTASection({ fullForm = false }: { fullForm?: boolean })
               color: 'rgba(255,255,255,0.76)',
               fontWeight: 500,
             }}>
-              <strong style={{ color: '#fff', fontWeight: 700 }}>100+ educators</strong> have joined
+              <strong style={{ color: '#fff', fontWeight: 700 }}>educators</strong> have joined
             </span>
           </div>
 

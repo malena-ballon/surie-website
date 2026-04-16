@@ -164,7 +164,6 @@ function StudentPortalCard() {
         <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, color: '#9CA3AF', margin: '0 0 18px' }}>
           Enter the code your teacher shared
         </p>
-        {/* Code input + button */}
         <div style={{ display: 'flex', gap: 7, marginBottom: 12 }}>
           <div style={{
             flex: 1,
@@ -190,13 +189,208 @@ function StudentPortalCard() {
             Join →
           </button>
         </div>
-        {/* Online count */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
           <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#22C55E' }} />
           <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 12, color: '#6B7280' }}>
             24 / 28 students online
           </span>
         </div>
+      </div>
+    </CardShell>
+  )
+}
+
+function EditReviewCard() {
+  const questions = [
+    { id: 'Q1', label: 'Which of the following best describes...' },
+    { id: 'Q2', label: 'What is considered a hallmark clinical...' },
+  ]
+  const options = [
+    { letter: 'A', text: 'A chronic functional disorder characterized by recurrent abdominal', correct: true },
+    { letter: 'B', text: 'The inability of the digestive system to absorb one or more major', correct: false },
+    { letter: 'C', text: 'An acute inflammatory disorder where the pancreatic duct becomes', correct: false },
+    { letter: 'D', text: 'A condition where sac-like herniations of the bowel lining extend', correct: false },
+  ]
+  const aiActions = ['Make it harder', 'Simplify language', 'Better distractors', 'Add context']
+
+  return (
+    <CardShell title="Edit &amp; Review Questions">
+      <div style={{ display: 'flex', height: 340, overflow: 'hidden' }}>
+
+        {/* Left: question list */}
+        <div style={{
+          width: 130, flexShrink: 0,
+          borderRight: '1px solid #E8E4DF',
+          background: '#FAFAF8',
+          overflowY: 'auto',
+          padding: '10px 0',
+        }}>
+          <div style={{
+            padding: '4px 8px 8px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          }}>
+            <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, fontWeight: 700, color: '#374151', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+              Questions 2
+            </span>
+          </div>
+          {questions.map((q, qi) => (
+            <div key={q.id} style={{
+              padding: '8px 10px',
+              background: qi === 0 ? '#EFF6FF' : 'transparent',
+              borderLeft: qi === 0 ? `3px solid ${teal}` : '3px solid transparent',
+              cursor: 'pointer',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 3 }}>
+                <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, fontWeight: 700, color: qi === 0 ? teal : '#9CA3AF' }}>{q.id}</span>
+                <span style={{
+                  fontFamily: 'var(--font-body), sans-serif', fontSize: 9, fontWeight: 600,
+                  color: qi === 0 ? teal : '#9CA3AF',
+                  background: qi === 0 ? 'rgba(0,114,198,0.1)' : '#F3F4F6',
+                  padding: '1px 5px', borderRadius: 4,
+                }}>1pt</span>
+              </div>
+              <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, color: qi === 0 ? '#1A1A2E' : '#6B7280', margin: 0, lineHeight: 1.4, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const }}>
+                {q.label}
+              </p>
+              <span style={{
+                display: 'inline-block', marginTop: 4,
+                fontFamily: 'var(--font-body), sans-serif', fontSize: 9, fontWeight: 600,
+                color: qi === 0 ? teal : '#9CA3AF',
+                background: qi === 0 ? 'rgba(0,114,198,0.08)' : '#F3F4F6',
+                padding: '1px 5px', borderRadius: 4,
+              }}>MCQ</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Center: question editor */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px', borderRight: '1px solid #E8E4DF' }}>
+          {/* Meta tags */}
+          <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 10 }}>
+            {['MCQ', 'Understanding', 'Medium'].map(tag => (
+              <span key={tag} style={{
+                fontFamily: 'var(--font-body), sans-serif', fontSize: 9, fontWeight: 600,
+                color: teal, background: 'rgba(0,114,198,0.08)',
+                padding: '2px 7px', borderRadius: 4,
+              }}>{tag}</span>
+            ))}
+            <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 9, color: '#9CA3AF' }}>Max pts:</span>
+              <span style={{
+                fontFamily: 'var(--font-body), sans-serif', fontSize: 10, fontWeight: 700,
+                color: '#1A1A2E', background: '#F3F4F6',
+                padding: '1px 7px', borderRadius: 4, border: '1px solid #E5E7EB',
+              }}>1</span>
+            </span>
+          </div>
+
+          {/* Question text */}
+          <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 11, fontWeight: 600, color: '#1A1A2E', margin: '0 0 10px', lineHeight: 1.5 }}>
+            Which of the following best describes Irritable Bowel Syndrome?
+          </p>
+
+          {/* Options */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 10 }}>
+            {options.map(opt => (
+              <div key={opt.letter} style={{
+                display: 'flex', alignItems: 'flex-start', gap: 7,
+                padding: '7px 10px',
+                borderRadius: 7,
+                border: opt.correct ? `1.5px solid #22C55E` : '1.5px solid #E5E7EB',
+                background: opt.correct ? 'rgba(34,197,94,0.06)' : '#FAFAF8',
+              }}>
+                <div style={{
+                  width: 15, height: 15, borderRadius: '50%', flexShrink: 0, marginTop: 1,
+                  border: opt.correct ? 'none' : '1.5px solid #D1D5DB',
+                  background: opt.correct ? '#22C55E' : 'transparent',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  {opt.correct && (
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  )}
+                </div>
+                <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, fontWeight: 600, color: '#374151', minWidth: 10 }}>{opt.letter}</span>
+                <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, color: opt.correct ? '#166534' : '#6B7280', lineHeight: 1.4 }}>{opt.text}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Tag + explanation hint */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+            <span style={{
+              fontFamily: 'var(--font-body), sans-serif', fontSize: 9, fontWeight: 600,
+              color: '#0891B2', background: 'rgba(8,145,178,0.08)',
+              padding: '2px 7px', borderRadius: 99,
+            }}>Gastrointestinal Disorders ×</span>
+          </div>
+          <div style={{
+            padding: '6px 10px', borderRadius: 6,
+            background: '#F8F6F2', border: '1px solid #E8E4DF',
+          }}>
+            <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 9, fontWeight: 600, color: '#6B7280' }}>
+              ∑ Explanation for students
+            </span>
+          </div>
+        </div>
+
+        {/* Right: AI assistant */}
+        <div style={{ width: 140, flexShrink: 0, padding: '12px 10px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 2 }}>
+            <div style={{
+              width: 18, height: 18, borderRadius: '50%',
+              background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}>
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
+              </svg>
+            </div>
+            <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 10, fontWeight: 700, color: '#1A1A2E' }}>AI Assistant</span>
+          </div>
+
+          {/* Quick action chips */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {aiActions.map(action => (
+              <span key={action} style={{
+                fontFamily: 'var(--font-body), sans-serif', fontSize: 9, fontWeight: 600,
+                color: '#374151', background: '#F3F4F6',
+                border: '1px solid #E5E7EB',
+                padding: '3px 7px', borderRadius: 99,
+                cursor: 'pointer',
+              }}>{action}</span>
+            ))}
+          </div>
+
+          {/* Hint text */}
+          <p style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 9, color: '#9CA3AF', lineHeight: 1.5, margin: 0, textAlign: 'center', padding: '4px 0' }}>
+            Ask AI to refine this question, or tap a quick action above.
+          </p>
+
+          {/* Input */}
+          <div style={{
+            marginTop: 'auto',
+            display: 'flex', alignItems: 'center', gap: 5,
+            padding: '6px 8px',
+            border: '1px solid #E5E7EB',
+            borderRadius: 7,
+            background: '#FAFAF8',
+          }}>
+            <span style={{ fontFamily: 'var(--font-body), sans-serif', fontSize: 9, color: '#D1D5DB', flex: 1 }}>Ask AI to edit...</span>
+            <div style={{
+              width: 18, height: 18, borderRadius: '50%',
+              background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}>
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
       </div>
     </CardShell>
   )
@@ -238,23 +432,31 @@ const stepData = [
   },
   {
     number: '03',
-    title: 'Students Take the Exam',
+    title: 'Edit & Review Questions',
     description:
-      'Publish with one click. Students join through their own portal using a class code — no accounts needed. Surie tracks completion in real time and handles all grading automatically as submissions come in.',
-    time: 'Self-paced by students',
+      'Every question comes with a correct answer pre-selected and a student-facing explanation already written. Use the built-in AI assistant to refine, reword, or adjust any question in one click — or add your own manually. Points are assigned automatically.',
+    time: '~5 minutes',
     flip: false,
   },
   {
     number: '04',
+    title: 'Students Take the Exam',
+    description:
+      'Publish with one click. Students join through their own portal using a class code — no accounts needed. Surie tracks completion in real time and handles all grading automatically as submissions come in.',
+    time: 'Self-paced by students',
+    flip: true,
+  },
+  {
+    number: '05',
     title: 'Get Your Diagnostic Report',
     description:
       'The moment the last student submits, your report is ready. See a subtopic mastery heatmap, at-risk student alerts, and plain-language misconception breakdowns — plus one-click re-assessment targeting the students who need it most.',
     time: 'Instant after last submission',
-    flip: true,
+    flip: false,
   },
 ]
 
-const stepCards = [<UploadCard />, <ConfigureCard />, <StudentPortalCard />, <DiagnosticCard />]
+const stepCards = [<UploadCard />, <ConfigureCard />, <EditReviewCard />, <StudentPortalCard />, <DiagnosticCard />]
 
 // ── Comparison table data ─────────────────────────────────────────────────────
 
@@ -323,7 +525,7 @@ export default function HowSurieWorksPage() {
             fontFamily: 'var(--font-body), sans-serif',
             fontSize: 17, color: '#6B7280', lineHeight: 1.65, margin: 0,
           }}>
-            Four steps from lesson material to learning clarity.
+            Five steps from lesson material to learning clarity.
           </p>
         </RevealWrapper>
       </section>

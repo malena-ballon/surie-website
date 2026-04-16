@@ -97,8 +97,8 @@ export default function TrustBar() {
           </div>
 
           <span style={textStyle}>
-            <span style={{ color: teal, fontWeight: 700 }}>100+</span>
-            {' '}educators on the waitlist
+            <span style={{ color: teal, fontWeight: 700 }}>Educators</span>
+            {' '}on the waitlist
           </span>
         </div>
 
