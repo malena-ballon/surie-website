@@ -73,6 +73,123 @@ export default function HeroSection() {
           }}
         />
 
+        {/* Floating card — left */}
+        <div
+          className="hidden xl:block"
+          style={{
+            position: 'absolute',
+            left: 'max(24px, calc(50% - 680px))',
+            top: '50%',
+            width: 268,
+            borderRadius: 14,
+            background: '#fff',
+            border: '1px solid #E8E4DF',
+            boxShadow: '0 12px 40px rgba(0,0,0,0.11)',
+            overflow: 'hidden',
+            zIndex: 1,
+            animation: 'floatCard 5s ease-in-out infinite',
+          }}
+        >
+          <div
+            style={{
+              padding: '8px 12px',
+              borderBottom: '1px solid #E8E4DF',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+            }}
+          >
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'var(--font-body), sans-serif',
+                fontSize: 11,
+                fontWeight: 600,
+                color: '#1A1A2E',
+                letterSpacing: '0.03em',
+              }}
+            >
+              Diagnostic Report
+            </span>
+          </div>
+          <div style={{ width: '100%', height: 192, overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/videos/Diagnostic-Report.gif"
+              alt="Diagnostic report"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
+            />
+          </div>
+        </div>
+
+        {/* Floating card — right */}
+        <div
+          className="hidden xl:block"
+          style={{
+            position: 'absolute',
+            right: 'max(24px, calc(50% - 680px))',
+            top: '50%',
+            width: 268,
+            borderRadius: 14,
+            background: '#fff',
+            border: '1px solid #E8E4DF',
+            boxShadow: '0 12px 40px rgba(0,0,0,0.11)',
+            overflow: 'hidden',
+            zIndex: 1,
+            animation: 'floatCardRight 5s ease-in-out infinite',
+            animationDelay: '0.8s',
+          }}
+        >
+          <div
+            style={{
+              padding: '8px 12px',
+              borderBottom: '1px solid #E8E4DF',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+            }}
+          >
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: `linear-gradient(135deg, ${teal}, ${tealLight})`,
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'var(--font-body), sans-serif',
+                fontSize: 11,
+                fontWeight: 600,
+                color: '#1A1A2E',
+                letterSpacing: '0.03em',
+              }}
+            >
+              Exam Builder
+            </span>
+          </div>
+          <div style={{ width: '100%', height: 192, overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/videos/Exam-Generation.gif"
+              alt="Exam generation"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left' }}
+            />
+          </div>
+        </div>
+
         {/* Center content */}
         <div
           style={{
@@ -147,20 +264,7 @@ export default function HeroSection() {
             >
               Smarter
             </span>
-            {' '}and{' '}
-            <span
-              style={{
-                backgroundImage: `linear-gradient(135deg, ${teal} 0%, ${tealLight} 100%)`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Easier
-            </span>
-            .{' '}
-            <br />
-            Learning{' '}
+            {', '}Learning{' '}
             <span
               style={{
                 backgroundImage: `linear-gradient(135deg, ${teal} 0%, ${tealLight} 100%)`,
@@ -291,13 +395,20 @@ export default function HeroSection() {
             zIndex: 20,
           }}
         >
+          {/* Gradient border wrapper */}
+          <div
+            style={{
+              borderRadius: 16,
+              padding: 2,
+              background: `linear-gradient(135deg, ${teal} 0%, ${tealLight} 100%)`,
+              boxShadow:
+                '0 4px 6px rgba(0,0,0,0.04), 0 12px 32px rgba(0,114,198,0.12), 0 32px 80px rgba(0,0,0,0.10)',
+            }}
+          >
           {/* Browser chrome wrapper */}
           <div
             style={{
               borderRadius: 14,
-              border: `2px solid rgba(0,180,216,0.35)`,
-              boxShadow:
-                '0 4px 6px rgba(0,0,0,0.04), 0 12px 32px rgba(0,114,198,0.10), 0 32px 80px rgba(0,0,0,0.10)',
               overflow: 'hidden',
               background: '#fff',
             }}
@@ -362,6 +473,7 @@ export default function HeroSection() {
               alt="Surie dashboard"
               style={{ width: '100%', display: 'block' }}
             />
+          </div>
           </div>
         </div>
       </section>
