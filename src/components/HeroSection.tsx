@@ -371,7 +371,7 @@ export default function HeroSection() {
                 fontWeight: 500,
               }}
             >
-              Join 50+ teachers already on the waitlist!
+              Join 100+ teachers already on the waitlist!
             </span>
           </div>
         </div>
