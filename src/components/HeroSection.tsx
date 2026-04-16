@@ -258,7 +258,20 @@ export default function HeroSection() {
             >
               Smarter
             </span>
-            , Learning{' '}
+            {' '}and{' '}
+            <span
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Easier
+            </span>
+            .{' '}
+            <br />
+            Learning{' '}
             <span
               style={{
                 backgroundImage: 'linear-gradient(135deg, #0072C6 0%, #00B4D8 100%)',
